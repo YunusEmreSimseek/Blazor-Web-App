@@ -1,0 +1,100 @@
+﻿@page "/register"
+@using System.ComponentModel.DataAnnotations
+@using BlazorApp1.Resources
+@using Microsoft.Extensions.Localization
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+
+
+
+
+<h1>@L["register"]</h1>
+
+<EditForm Model="@registerModel" OnSubmit="HandleRegister" FormName="RegisterForm">
+
+    <div class="mb-3">
+        <label>@L["username"]</label>
+        <InputText @bind-Value="registerModel.Username" class="form-control" />
+    </div>
+
+     <div class="mb-3">
+        <label>@L["password"]</label>
+        <InputText @bind-Value="registerModel.Password" type="password" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>@L["confirmPassword"]</label>
+        <InputText @bind-Value="registerModel.ConfirmPassword" type="password" class="form-control" />
+    </div> 
+
+    <button type="submit" class="btn btn-primary">@L["register"]</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger mt-3">@message</div>
+}
+
+@code {
+    private RegisterModel registerModel = new();
+    private string message = "";
+
+    private async Task HandleRegister()
+    {
+        var response = isValid();
+        if (!response) return;
+
+        var result = await UserService.RegisterAsync(registerModel.Username, registerModel.Password);
+
+        if (result)
+        {
+            message = "Registration successful!";
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            message = "Username already exists.";
+        }
+    }
+
+    private bool isValid()
+    {
+        if (String.IsNullOrEmpty(registerModel.Username))
+        {
+            message = L["usernameRequired"];
+            return false;
+        }
+        if (String.IsNullOrEmpty(registerModel.Password))
+        {
+            message = L["passwordRequired"];
+            return false;
+        }
+        if (registerModel.Password.Length < 6)
+        {
+            message = L["passwordMinLength"];
+            return false;
+        }
+        if (String.IsNullOrEmpty(registerModel.ConfirmPassword))
+        {
+            message = L["confirmPasswordRequired"];
+            return false;
+        }
+        if (registerModel.Password != registerModel.ConfirmPassword)
+        {
+            message = L["passwordsDontMatch"];
+            return false;
+        }
+        return true;
+    }
+
+    public class RegisterModel
+    {
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+    
+        public string ConfirmPassword { get; set; }
+    }
+}

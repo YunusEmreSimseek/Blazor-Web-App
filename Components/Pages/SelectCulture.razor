@@ -1,0 +1,24 @@
+﻿@rendermode InteractiveServer
+@inject NavigationManager Nav
+
+
+
+<div class="ms-auto">
+    <select @onchange="ChangeCulture" value="@CurrentCulture">
+        <option value="en">English</option>
+        <option value="tr">Türkçe</option>
+        <option value="mk">Macedonia</option>
+    </select>
+</div>
+
+@code {
+    private string CurrentCulture => Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+
+    private Task ChangeCulture(ChangeEventArgs e)
+    {
+        var culture = e.Value?.ToString() ?? "en";
+        var returnUrl = Nav.ToBaseRelativePath(Nav.Uri);
+        Nav.NavigateTo($"/set-culture?culture={culture}&returnUrl=/{returnUrl}", forceLoad: true);
+        return Task.CompletedTask;
+    }
+}

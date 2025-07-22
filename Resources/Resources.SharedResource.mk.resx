@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="actions" xml:space="preserve">
+    <value>акции</value>
+  </data>
+  <data name="add" xml:space="preserve">
+    <value>додадете</value>
+  </data>
+  <data name="addNewCustomer" xml:space="preserve">
+    <value>додадете нов клиент</value>
+  </data>
+  <data name="addNewUser" xml:space="preserve">
+    <value>додај нов корисник</value>
+  </data>
+  <data name="adminPanel" xml:space="preserve">
+    <value>административен панел</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>откажете</value>
+  </data>
+  <data name="captcha" xml:space="preserve">
+    <value>капча</value>
+  </data>
+  <data name="captchaFailed" xml:space="preserve">
+    <value>Captcha е неуспешен.</value>
+  </data>
+  <data name="changePassword" xml:space="preserve">
+    <value>промени лозинка</value>
+  </data>
+  <data name="city" xml:space="preserve">
+    <value>град</value>
+  </data>
+  <data name="clickToDownload" xml:space="preserve">
+    <value>кликнете за да преземете</value>
+  </data>
+  <data name="company" xml:space="preserve">
+    <value>компанија</value>
+  </data>
+  <data name="confirmNewPasswordRequired" xml:space="preserve">
+    <value>Потврдете дека е потребна нова лозинка.</value>
+  </data>
+  <data name="confirmPassword" xml:space="preserve">
+    <value>потврди лозинка</value>
+  </data>
+  <data name="confirmPasswordRequired" xml:space="preserve">
+    <value>потребна е потврда за лозинката</value>
+  </data>
+  <data name="country" xml:space="preserve">
+    <value>земја</value>
+  </data>
+  <data name="createdAt" xml:space="preserve">
+    <value>создадено во</value>
+  </data>
+  <data name="currentPassword" xml:space="preserve">
+    <value>Тековна лозинка</value>
+  </data>
+  <data name="currentPasswordLength" xml:space="preserve">
+    <value>Тековната лозинка мора да има најмалку 6 знаци.</value>
+  </data>
+  <data name="currentPasswordRequired" xml:space="preserve">
+    <value>Потребна е тековна лозинка.</value>
+  </data>
+  <data name="currentPasswordWrong" xml:space="preserve">
+    <value>Тековната лозинка е погрешна.</value>
+  </data>
+  <data name="customerCount" xml:space="preserve">
+    <value>
+тековен број на клиенти</value>
+  </data>
+  <data name="customerList" xml:space="preserve">
+    <value>список на клиенти</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>избришете</value>
+  </data>
+  <data name="download" xml:space="preserve">
+    <value>преземање</value>
+  </data>
+  <data name="edit" xml:space="preserve">
+    <value>уредување</value>
+  </data>
+  <data name="editCustomer" xml:space="preserve">
+    <value>уреди клиент</value>
+  </data>
+  <data name="editUser" xml:space="preserve">
+    <value>уредување на корисник</value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>е-пошта</value>
+  </data>
+  <data name="firstName" xml:space="preserve">
+    <value>име</value>
+  </data>
+  <data name="hello" xml:space="preserve">
+    <value>здраво</value>
+  </data>
+  <data name="id" xml:space="preserve">
+    <value>ИД</value>
+  </data>
+  <data name="index" xml:space="preserve">
+    <value>индекс</value>
+  </data>
+  <data name="lastName" xml:space="preserve">
+    <value>презимето</value>
+  </data>
+  <data name="loading" xml:space="preserve">
+    <value>вчитување</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>најавување</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>име</value>
+  </data>
+  <data name="newPassword" xml:space="preserve">
+    <value>Нова лозинка</value>
+  </data>
+  <data name="newPasswordAgain" xml:space="preserve">
+    <value>Нова лозинка повторно</value>
+  </data>
+  <data name="newPasswordLength" xml:space="preserve">
+    <value>Новата лозинка мора да има најмалку 6 знаци.</value>
+  </data>
+  <data name="newPasswordRequired" xml:space="preserve">
+    <value>Потребна е нова лозинка.</value>
+  </data>
+  <data name="newPasswordsDontMatch" xml:space="preserve">
+    <value>Новите лозинки не се совпаѓаат.</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>следно</value>
+  </data>
+  <data name="page" xml:space="preserve">
+    <value>страница</value>
+  </data>
+  <data name="pageSize" xml:space="preserve">
+    <value>големина на страницата</value>
+  </data>
+  <data name="password" xml:space="preserve">
+    <value>лозинка</value>
+  </data>
+  <data name="passwordChangeSuccess" xml:space="preserve">
+    <value>Лозинката е успешно променета.</value>
+  </data>
+  <data name="passwordMinLength" xml:space="preserve">
+    <value>Лозинката мора да биде најмалку 6 знаци</value>
+  </data>
+  <data name="passwordRequired" xml:space="preserve">
+    <value>потребна е лозинка</value>
+  </data>
+  <data name="passwordsDontMatch" xml:space="preserve">
+    <value>лозинките не се совпаѓаат</value>
+  </data>
+  <data name="passwordsMustBeDifferent" xml:space="preserve">
+    <value>Новите лозинки мора да бидат различни од тековната лозинка.</value>
+  </data>
+  <data name="phone" xml:space="preserve">
+    <value>телефон</value>
+  </data>
+  <data name="previous" xml:space="preserve">
+    <value>поранешен</value>
+  </data>
+  <data name="register" xml:space="preserve">
+    <value>регистар</value>
+  </data>
+  <data name="role" xml:space="preserve">
+    <value>улога</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>пребарување</value>
+  </data>
+  <data name="signOut" xml:space="preserve">
+    <value>одјави се</value>
+  </data>
+  <data name="subDate" xml:space="preserve">
+    <value>датум на претплата
+</value>
+  </data>
+  <data name="subtitle" xml:space="preserve">
+    <value>Оваа компонента прикажува податоци со пагинација и филтрирање.</value>
+  </data>
+  <data name="surname" xml:space="preserve">
+    <value>презимето</value>
+  </data>
+  <data name="update" xml:space="preserve">
+    <value>ажурирање</value>
+  </data>
+  <data name="username" xml:space="preserve">
+    <value>корисничко име</value>
+  </data>
+  <data name="usernameRequired" xml:space="preserve">
+    <value>Корисничкото име е задолжително</value>
+  </data>
+  <data name="website" xml:space="preserve">
+    <value>веб-страница</value>
+  </data>
+  <data name="welcome" xml:space="preserve">
+    <value>добредојде</value>
+  </data>
+</root>

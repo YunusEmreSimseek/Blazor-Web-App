@@ -1,0 +1,380 @@
+@using BlazorApp1.Data
+@using BlazorApp1.Models
+@using BlazorApp1.Utils
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.Localization
+@using static BlazorApp1.Components.Pages.CustomerTable
+@using static BlazorApp1.Components.Pages.Search
+@rendermode InteractiveServer
+@inject AppDbContext _context
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@inject UserSessionManager UserSessionManager
+@inject NavigationManager Nav
+@inject UserService UserService
+@page "/admin-panel"
+<ConfirmDialog Visible="@_visible" Message="@_message" OnClose="HandleConfirm" />
+
+<PageTitle>@L["adminPanel"]</PageTitle>
+
+<h1>@L["adminPanel"]</h1>
+
+@if(_isLoading)
+{
+<div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">@L["loading"]...</span>
+        </div>
+    </div>
+}
+else 
+{
+ <p role="status">@L["userCount"]: @_totalCount</p>
+    <div class="input-group mb-3" style="max-width: 400px;">
+        <input type="text" class="form-control mb-3" placeholder="@L["search"]..." @bind="_searchTerm" />
+        <button class="btn btn-primary" @onclick="OnSearch">@L["search"]</button>
+    </div>
+    
+
+    <div class="mb-3">
+        <button class="btn btn-secondary me-2" @onclick="PreviousPage" disabled="@IsPreviousDisabled">⟨ @L["previous"]</button>
+        <span>@L["page"]e @_currentPage / @TotalPages</span>
+        <button class="btn btn-secondary ms-2" @onclick="NextPage" disabled="@IsNextDisabled">@L["next"] ⟩</button>
+    </div>
+
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <p class="mb-0">@L["pageSize"]: </p>
+
+        <select class="form-select w-auto" @onchange="OnPageSizeChanged">
+            <option value="10" selected="@IsSelectedPageSize(10)">10</option>
+            <option value="50" selected="@IsSelectedPageSize(50)">50</option>
+            <option value="100" selected="@IsSelectedPageSize(100)">100</option>
+        </select>
+
+        
+    </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th @onclick="() => SortBy(SortUserColumn.Id)">
+                @L["id"]
+                @(_selectedSortColumn == SortUserColumn.Id
+                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                : "")
+            </th>
+            <th @onclick="() => SortBy(SortUserColumn.Username)">
+                @L["username"]
+                @(_selectedSortColumn == SortUserColumn.Username
+                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                : "")
+            </th>
+            <th @onclick="() => SortBy(SortUserColumn.Role)">
+                @L["role"]
+                @(_selectedSortColumn == SortUserColumn.Role
+                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                : "")
+            </th>
+            <th @onclick="() => SortBy(SortUserColumn.CreatedAt)">
+                @L["createdAt"]
+                @(_selectedSortColumn == SortUserColumn.CreatedAt
+                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                : "")
+            </th>
+                <th>@L["actions"]</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in _users)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Username</td>
+                <td>@user.Role</td>
+                <td>@user.CreatedAt</td>
+                <td>
+                        <button class="btn btn-sm btn-primary me-1" @onclick="() => EditUser(user)">@L["edit"]</button>
+                        @if(user.Username != UserSessionManager.Username){
+                            <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete(user.Id)">@L["delete"]</button> 
+                        }
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<span class="mb-3">
+                <h3>@(_isEditMode? @L["editUser"] : @L["addNewUser"])</h3>
+
+    @if(_isEditMode){
+        <div class="mb-3">
+        <input class="form-control" placeholder=@L["username"] @bind="_editingUser.Username" />
+        <select @bind="_editingUser.Role" class="form-select" style="width: 200px; display: inline-block; margin-right: 10px;">
+    @foreach (var role in Enum.GetValues(typeof(Role)))
+    {
+        <option value="@role">@role</option>
+    }
+</select>
+    </div>
+    }
+    else {
+        <div class="mb-3">
+        <input class="form-control" placeholder=@L["username"] @bind="_editingUser.Username" />
+        <input class="form-control" placeholder=@L["password"] @bind="_newUserPassword" />
+        <select @bind="_editingUser.Role" class="form-select" style="width: 200px; display: inline-block; margin-right: 10px;">
+    @foreach (var role in Enum.GetValues(typeof(Role)))
+    {
+        <option value="@role">@role</option>
+    }
+</select>
+    </div>
+    }
+
+<button class="btn btn-success" @onclick="SaveUser">@(_isEditMode? @L["update"] : @L["add"])</button>
+<button class="btn btn-secondary ms-2" @onclick="ClearForm">@L["cancel"]</button>
+            </span>
+}
+
+
+
+
+
+
+@code 
+{
+    private bool _isLoading = false;
+    private int _currentPage = 1;
+    private int _pageSize = 10;
+    private int _totalCount = 0;
+    private string _searchTerm = "";
+    private int TotalPages => (int)Math.Ceiling((double)_totalCount / _pageSize);
+    private bool IsPreviousDisabled => _currentPage == 1;
+    private bool IsNextDisabled => _currentPage >= TotalPages;
+    private int SelectedPageSize => _pageSize;
+    private List<User> _users = [];
+    private EditingUser _editingUser = new EditingUser{Role=Role.User};
+    private bool _isEditMode = false;
+    private SortDirection _selectedSortDirection { get; set; }
+    private SortUserColumn _selectedSortColumn { get; set; }
+    private bool _visible = false;
+    private string _message = "";
+
+    private string _newUserPassword = "";
+    private TaskCompletionSource<bool>? _tcs;
+
+    private async Task SaveUser()
+    {
+        if (_isEditMode)
+        {
+            var existing = await _context.Users.FindAsync(_editingUser.Id);
+            if (existing is not null && !string.IsNullOrEmpty(_editingUser.Username) && _editingUser.Role != null)
+            {
+                _isLoading = true;
+                StateHasChanged();
+
+                existing.Username = _editingUser.Username;
+                existing.Role = _editingUser.Role.Value;
+                await _context.SaveChangesAsync();
+                _isLoading = false;
+                StateHasChanged();
+            }
+        }
+        else if (!string.IsNullOrEmpty(_editingUser.Username) && _editingUser.Role != null)
+        {
+            _isLoading = true;
+            StateHasChanged();
+            await UserService.RegisterAsync(_editingUser.Username,_newUserPassword,_editingUser.Role.Value);
+            _isLoading = false;
+            StateHasChanged();
+            await LoadUsersAsync();
+        }
+        ClearForm();
+    }
+
+    protected override void OnInitialized(){
+        if(!UserSessionManager.IsAuthenticated || UserSessionManager.Role != Role.Admin){
+            Nav.NavigateTo("/");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await  LoadUsersAsync();
+
+    }
+
+    private async Task ConfirmDelete(int userId)
+    {
+        _message = "Are you sure to you want to delete this user ?";
+        _visible = true;
+        _tcs = new TaskCompletionSource<bool>();
+        var result = await _tcs.Task;
+
+        if (result)
+        {
+            await DeleteUser(userId);
+        }
+
+
+    }
+    private Task HandleConfirm(bool result)
+    {
+        _visible = false;
+        _message = "";
+        _tcs?.SetResult(result);
+        StateHasChanged(); 
+        return Task.CompletedTask;
+    }
+
+
+    private async Task LoadUsersAsync(){
+        if (_isLoading) return;
+
+        _isLoading = true;
+        StateHasChanged();
+
+        IQueryable<User> query = _context.Users;
+
+        if (!string.IsNullOrWhiteSpace(_searchTerm) && _searchTerm.Length >= 2)
+        {
+            query = query.Where(c =>
+            (c.Username != null && c.Username.Contains(_searchTerm)) ||
+            (c.Role != null && c.Role.ToString().Contains(_searchTerm)));
+        } 
+
+        _totalCount = await query.CountAsync();
+
+        if (_selectedSortDirection == SortDirection.Ascending)
+        {
+            switch (_selectedSortColumn)
+            {
+                case SortUserColumn.Id: query = query.OrderBy(c => c.Id); break;
+                case SortUserColumn.Username: query = query.OrderBy(c => c.Username); break;
+                case SortUserColumn.Role: query = query.OrderBy(c => c.Role); break;
+                case SortUserColumn.CreatedAt: query = query.OrderBy(c => c.CreatedAt); break;
+                default: query = query.OrderBy(c => c.Id); break;
+            }
+        }
+        else if (_selectedSortDirection == SortDirection.Descending)
+        {
+            switch (_selectedSortColumn)
+            {
+                case SortUserColumn.Id: query = query.OrderByDescending(c => c.Id); break;
+                case SortUserColumn.Username: query = query.OrderByDescending(c => c.Username); break;
+                case SortUserColumn.Role: query = query.OrderByDescending(c => c.Role); break;
+                case SortUserColumn.CreatedAt: query = query.OrderByDescending(c => c.CreatedAt); break;
+                default: query = query.OrderByDescending(c => c.Id); break;
+            }
+        } 
+
+        query = query.Skip((_currentPage - 1) * _pageSize);
+        query = query.Take(_pageSize);
+
+        _users = await query.ToListAsync();
+        _isLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task DeleteUser(int userId){
+        var user = await _context.Users.FindAsync(userId);
+        if (user != null)
+        {
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            await LoadUsersAsync();
+        }
+    }
+
+    private void EditUser(User user)
+    {
+        _editingUser = new EditingUser
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Role = user.Role,
+            CreatedAt = user.CreatedAt
+        };
+        _isEditMode = true;
+    }
+
+    private async Task SortBy(SortUserColumn column)
+    {
+        if (_selectedSortColumn == column)
+        {
+            _selectedSortDirection = _selectedSortDirection == SortDirection.Ascending
+                ? SortDirection.Descending
+                : SortDirection.Ascending;
+        }
+        else
+        {
+            _selectedSortColumn = column;
+            _selectedSortDirection = SortDirection.Ascending;
+        }
+
+        _currentPage = 1;
+        await LoadUsersAsync();
+
+    }
+
+    private void ClearForm()
+    {
+        _editingUser = new();
+        _editingUser.Role = Role.User;
+        _newUserPassword = "";
+        _isEditMode = false;
+    }
+
+    private bool IsSelectedPageSize(int size) => _pageSize == size;
+
+
+    private async Task  OnPageSizeChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int newSize))
+        {
+            _pageSize = newSize;
+            _currentPage = 1;
+            await LoadUsersAsync();
+        }
+    }
+
+
+    public async Task NextPage()
+    {
+        _currentPage = _currentPage + 1;
+        await LoadUsersAsync();
+    }
+
+    private async Task PreviousPage()
+    {
+        if (_currentPage > 1)
+        {
+            _currentPage--;
+            await LoadUsersAsync();
+        }
+    }
+
+    private async Task  OnSearch()
+    {
+        _currentPage = 1;
+        await LoadUsersAsync();
+        
+    }
+
+    enum SortUserColumn {
+        Id,
+        Username,
+        CreatedAt,
+        Role
+    }
+
+    private class EditingUser {
+        public int? Id {get; set;}
+      public  string? Username { get; set;}
+       public Role? Role { get; set;}
+
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+    }
+}
+

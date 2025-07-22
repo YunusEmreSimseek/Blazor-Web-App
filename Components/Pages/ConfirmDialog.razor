@@ -1,0 +1,39 @@
+﻿@rendermode InteractiveServer
+
+@if (Visible)
+{
+    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9999;display:flex;justify-content:center;align-items:flex-start;padding-top:100px;">
+        <div style="background:white;padding:1.5rem;border-radius:8px;width:300px;box-shadow:0 4px 10px rgba(0,0,0,0.3);">
+            <p>@Message</p>
+            <div style="text-align:right;">
+                <button @onclick="() => OnClose.InvokeAsync(true)">Yes</button>
+                <button @onclick="() => OnClose.InvokeAsync(false)"  @ref="cancelButtonRef">Cancel</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public string Message { get; set; } = "Emin misiniz?";
+    [Parameter] public EventCallback<bool> OnClose { get; set; }
+
+    private ElementReference cancelButtonRef;
+    private bool _shouldFocus = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_shouldFocus && Visible)
+        {
+            _shouldFocus = false;
+            await cancelButtonRef.FocusAsync(); // 🔥 burada odak verilir
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Visible)
+            _shouldFocus = true;
+    }
+}
+

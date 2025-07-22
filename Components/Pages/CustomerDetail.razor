@@ -1,0 +1,58 @@
+﻿@page "/customer-detail/{id:string}"
+@using BlazorApp1.Data
+@using Microsoft.Extensions.Localization
+
+@rendermode InteractiveServer
+
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@inject UserSessionManager UserSessionManager
+@inject NavigationManager Nav
+@inject AppDbContext _context
+@inject CustomerService _customerService
+
+
+
+<PageTitle>@L["customerDetail"]</PageTitle>
+
+<h1>@L["customerDetail"]</h1>
+
+
+
+    <span class="mb-3">
+        <h3>@(isEditMode? @L["editCustomer"] : @L["addNewCustomer"])</h3>
+
+        <div class="mb-3">
+            <input class="form-control" placeholder=@L["firstName"] @bind="customerModel.First_Name" />
+            <input class="form-control" placeholder=@L["lastName"] @bind="customerModel.Last_Name" />
+            <input class="form-control" placeholder=@L["company"] @bind="customerModel.Company" />
+            <input class="form-control" placeholder=@L["city"] @bind="customerModel.City" />
+            <input class="form-control" placeholder=@L["country"] @bind="customerModel.Country" />
+            <input class="form-control" placeholder="@L["phone"] 1" @bind="customerModel.Phone_1" />
+            <input class="form-control" placeholder="@L["phone"] 2" @bind="customerModel.Phone_2" />
+            <input class="form-control" placeholder=@L["email"] @bind="customerModel.Email" />
+            <input class="form-control" placeholder=@L["website"] @bind="customerModel.Website" />
+            <input class="form-control" type="date" @bind="customerModel.Subscription_Date" />
+        </div>
+
+        <button class="btn btn-success" @onclick="SaveCustomer">@(isEditMode? @L["update"] : @L["add"])</button>
+        <button class="btn btn-secondary ms-2" @onclick="ClearForm">@L["cancel"]</button>
+    </span>
+
+
+
+
+@code {
+    [Parameter] public string? CustomerId { get; set; }
+    private bool _isLoading = false;
+
+    protected override void  OnInitialized()
+    { if (!(UserSessionManager.Role == Role.Director || UserSessionManager.Role == Role.Admin)) Nav.NavigateTo("/"); }
+
+    private async Task GetCustomerDetail()
+    {
+        if (string.IsNullOrEmpty(CustomerId)) return;
+        _isLoading = true;
+
+
+    }
+}

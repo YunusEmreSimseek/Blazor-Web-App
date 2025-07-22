@@ -1,0 +1,21 @@
+﻿@using Blazored.LocalStorage
+@using Microsoft.Extensions.Localization
+@inject UserSessionManager UserSessionManager
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@inject ILocalStorageService LocalStorageService
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+<span class="ms-3">
+    <button class="btn btn-primary" @onclick="SignOut">@L["signOut"]</button>
+</span>
+
+@code {
+    private async Task SignOut()
+    {
+        Console.WriteLine("Signout calisti ------------------------------------------------");
+        await LocalStorageService.RemoveItemAsync("username");
+        UserSessionManager.SignOut();
+        Nav.NavigateTo("/login");
+    }
+}

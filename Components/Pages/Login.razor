@@ -1,0 +1,82 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Blazored.LocalStorage
+@using Microsoft.Extensions.Localization
+@inject NavigationManager NavigationManager
+@inject UserService UserService
+@inject UserSessionManager UserSessionManager
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@inject ILocalStorageService LocalStorageService
+
+
+
+<h1>@L["login"]</h1>
+
+<EditForm Model="@loginModel" OnSubmit="HandleLogin" FormName="LoginForm">
+
+    <div class="mb-3">
+        <label>@L["username"]</label>
+        <InputText class="form-control" @bind-Value="loginModel.Username" />
+    </div>
+
+    <div class="mb-3">
+        <label>@L["password"]</label>
+        <InputText class="form-control" type="password" @bind-Value="loginModel.Password" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">@L["login"]</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger mt-3">@message</div>
+}
+
+@code {
+    private LoginModel loginModel = new();
+    private string message = "";
+
+    private async Task HandleLogin()
+    {
+        var response = isValid();
+        if (!response) return;
+
+        var result = await UserService.LoginAsync(loginModel.Username, loginModel.Password);
+
+        if (result != null)
+        {
+            
+            await LocalStorageService.SetItemAsStringAsync("username", result.Username);
+            await LocalStorageService.SetItemAsync("role", result.Role);
+            UserSessionManager.SetUser(result.Username, result.Role);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            message = "Invalid username or password.";
+        }
+    }
+
+    private bool isValid()
+    {
+        if (String.IsNullOrEmpty(loginModel.Username))
+        {
+            message = L["usernameRequired"];
+            return false;
+        }
+        if (String.IsNullOrEmpty(loginModel.Password))
+        {
+            message = L["passwordRequired"];
+            return false;
+        }
+        return true;
+    }
+
+    public class LoginModel
+    {
+        public string Username { get; set; } = string.Empty;
+
+        public string Password { get; set; } = string.Empty;
+    }
+}

@@ -1,0 +1,161 @@
+﻿@using BlazorApp1.Data
+@using BlazorApp1.Models
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.Localization
+@using static BlazorApp1.Components.Pages.CustomerTable
+@inject CsvExportService CsvExportService
+@inject PdfExportService PdfExportService
+@inject NavigationManager NavigationManager
+@inject UserSessionManager UserSessionManager
+@inject AppDbContext _context
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@rendermode InteractiveServer
+
+@if (UserSessionManager.IsAuthenticated && UserSessionManager.Role != Role.User)
+{
+    <select @bind="selectedFormat" class="form-select" style="width: 200px; display: inline-block; margin-right: 10px;">
+    @foreach (var format in Enum.GetValues(typeof(ExportFormat)))
+    {
+        <option value="@format">@format</option>
+    }
+</select>
+
+<button class="btn btn-primary" @onclick="DownloadFile">@L["download"]</button>
+
+@if (isLoading)
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">@L["loading"]...</span>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(fileUrl))
+{
+    <p><a href="@fileUrl" download>@L["clickToDownload"]</a></p>
+}
+}
+
+
+
+@code {
+    public string searchTerm = "";
+    private bool isLoading = false;
+    public List<Customer>? Customers;
+    private ExportFormat selectedFormat = ExportFormat.PDF;
+    private string fileUrl;
+
+    public SortDirection SelectedSortDirection = SortDirection.Ascending;
+    public SortColumn CurrentSortColumn = SortColumn.Index;
+
+
+
+    private async Task DownloadFile()
+    {
+
+        isLoading = true;
+
+
+        @* await LoadCustomersForExport(); *@
+
+        if (Customers == null || !Customers.Any()) {
+            return;
+        }
+
+        var fileName = $"{L["customerList"]}";
+
+        if (selectedFormat == ExportFormat.PDF)
+        {
+            var pdfBytes = PdfExportService.GenerateCustomerPdf(Customers, L);
+            var path = Path.Combine("wwwroot", "exports", $"{fileName}.pdf");
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            await File.WriteAllBytesAsync(path, pdfBytes);
+            fileUrl = NavigationManager.BaseUri + $"exports/{fileName}.pdf";
+            Console.WriteLine("Fileurl:" + fileUrl + "-----------------------------------");
+        }
+        else if (selectedFormat == ExportFormat.CSV)
+        {
+            var csvBytes = CsvExportService.GenerateCustomerCsv(Customers, L);
+            var path = Path.Combine("wwwroot", "exports", $"{fileName}.csv");
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            await File.WriteAllBytesAsync(path, csvBytes);
+            fileUrl = NavigationManager.BaseUri + $"exports/{fileName}.csv";
+        }
+
+        isLoading = false;
+    }
+
+    private async Task LoadCustomersForExport()
+    {
+        // isLoading = true;
+        // StateHasChanged();
+
+        IQueryable<Customer> query = _context.Customers;
+
+        if (!string.IsNullOrWhiteSpace(searchTerm) && searchTerm.Length >= 2)
+        {
+            query = query.Where(c =>
+            (c.First_Name != null && c.First_Name.Contains(searchTerm)) ||
+            (c.Last_Name != null && c.Last_Name.Contains(searchTerm)) ||
+        (c.City != null && c.City.Contains(searchTerm)) ||
+            (c.Country != null && c.Country.Contains(searchTerm)) ||
+            (c.Phone_1 != null && c.Phone_1.Contains(searchTerm)) ||
+            (c.Phone_2 != null && c.Phone_2.Contains(searchTerm)) ||
+            (c.Email != null && c.Email.Contains(searchTerm)) ||
+            (c.Website != null && c.Website.Contains(searchTerm)));
+        }
+
+         if (SelectedSortDirection == SortDirection.Ascending)
+        {
+            switch (CurrentSortColumn)
+            {
+                case SortColumn.Index: query = query.OrderBy(c => c.Index); break;
+                case SortColumn.Id: query = query.OrderBy(c => c.Customer_Id); break;
+                case SortColumn.FirstName: query = query.OrderBy(c => c.First_Name); break;
+                case SortColumn.LastName: query = query.OrderBy(c => c.Last_Name); break;
+                case SortColumn.Company: query = query.OrderBy(c => c.Company); break;
+                case SortColumn.City: query = query = query.OrderBy(c => c.City); break;
+                case SortColumn.Country: query = query.OrderBy(c => c.Country); break;
+                case SortColumn.Phone1: query = query.OrderBy(c => c.Phone_1); break;
+                case SortColumn.Phone2: query = query.OrderBy(c => c.Phone_2); break;
+                case SortColumn.Email: query = query.OrderBy(c => c.Email); break;
+                case SortColumn.SubDate: query = query.OrderBy(c => c.Subscription_Date); break;
+                case SortColumn.Website: query = query.OrderBy(c => c.Website); break;
+                default: query = query.OrderBy(c => c.Index); break;
+            }
+        }
+        else if (SelectedSortDirection == SortDirection.Descending)
+        {
+            switch (CurrentSortColumn)
+            {
+                case SortColumn.Index: query = query.OrderByDescending(c => c.Index); break;
+                case SortColumn.Id: query = query.OrderByDescending(c => c.Customer_Id); break;
+                case SortColumn.FirstName: query = query.OrderByDescending(c => c.First_Name); break;
+                case SortColumn.LastName: query = query.OrderByDescending(c => c.Last_Name); break;
+                case SortColumn.Company: query = query.OrderByDescending(c => c.Company); break;
+                case SortColumn.City: query = query.OrderByDescending(c => c.City); break;
+                case SortColumn.Country: query = query.OrderByDescending(c => c.Country); break;
+                case SortColumn.Phone1: query = query.OrderByDescending(c => c.Phone_1); break;
+                case SortColumn.Phone2: query = query.OrderByDescending(c => c.Phone_2); break;
+                case SortColumn.Email: query = query.OrderByDescending(c => c.Email); break;
+                case SortColumn.SubDate: query = query.OrderByDescending(c => c.Subscription_Date); break;
+                case SortColumn.Website: query = query.OrderByDescending(c => c.Website); break;
+                default: query = query.OrderByDescending(c => c.Index); break;
+            }
+        } 
+
+        var customerList = await query.ToListAsync();
+        // isLoading = false;
+        // StateHasChanged();
+        Customers = customerList;
+
+    }
+
+
+    public enum ExportFormat
+    {
+        PDF,
+        CSV
+    }
+}

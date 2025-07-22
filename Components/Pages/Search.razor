@@ -1,0 +1,293 @@
+﻿@page "/"
+@using BlazorApp1.Data
+@using BlazorApp1.Models
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.EntityFrameworkCore;
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http
+@inject DialogService DialogService
+@inject AppDbContext db
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+@inject IHttpContextAccessor HttpContextAccessor
+@inject PdfExportService PdfExportService
+@inject UserSessionManager UserSessionManager
+
+
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+
+
+
+<ConfirmDialog Visible="@_visible" Message="@_message" OnClose="HandleConfirm" />
+
+
+<PageTitle>@L["search"]</PageTitle>
+
+<h1>@L["search"]</h1>
+
+<p>@L["subtitle"]</p>
+
+@if (isLoading )
+{
+
+    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">@L["loading"]...</span>
+        </div>
+    </div>
+
+}
+else
+{
+    <p role="status">@L["customerCount"]: @totalCount</p>
+    <div class="input-group mb-3" style="max-width: 400px;">
+        <input type="text" class="form-control mb-3" placeholder="@L["search"]..." @bind="searchTerm" />
+        <button class="btn btn-primary" @onclick="OnSearch">@L["search"]</button>
+    </div>
+    
+
+    <div class="mb-3">
+        <button class="btn btn-secondary me-2" @onclick="PreviousPage" disabled="@IsPreviousDisabled">⟨ @L["previous"]</button>
+        <span>@L["page"]e @CurrentPage / @TotalPages</span>
+        <button class="btn btn-secondary ms-2" @onclick="NextPage" disabled="@IsNextDisabled">@L["next"] ⟩</button>
+    </div>
+
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <p class="mb-0">@L["pageSize"]: </p>
+
+        <select class="form-select w-auto" @onchange="OnPageSizeChanged">
+            <option value="10" selected="@IsSelectedPageSize(10)">10</option>
+            <option value="50" selected="@IsSelectedPageSize(50)">50</option>
+            <option value="100" selected="@IsSelectedPageSize(100)">100</option>
+        </select>
+
+        
+    </div>
+
+<CustomerTable
+                   OnTotalCountChanged="value => totalCount = value"
+                   OnEditRequested="value => EditCustomer(value) "
+                   ConfirmDelete="value => ConfirmDelete(value)"
+                   CurrentPage="CurrentPage"
+                   PageSize="PageSize"
+                   OnCustomerChanged="value => AssignToCustomers(value)"
+                    @ref="customerTable"
+                   /> 
+                
+
+    <ExportTable @ref="exportTable" />
+
+
+    @if(UserSessionManager.IsAuthenticated && (UserSessionManager.Role == Role.Director || UserSessionManager.Role == Role.Admin )){
+
+        <span class="mb-3">
+                <h3>@(isEditMode? @L["editCustomer"] : @L["addNewCustomer"])</h3>
+
+    <div class="mb-3">
+        <input class="form-control" placeholder=@L["firstName"] @bind="customerModel.First_Name" />
+        <input class="form-control" placeholder=@L["lastName"] @bind="customerModel.Last_Name" />
+        <input class="form-control" placeholder=@L["company"] @bind="customerModel.Company" />
+        <input class="form-control" placeholder=@L["city"] @bind="customerModel.City" />
+        <input class="form-control" placeholder=@L["country"] @bind="customerModel.Country" />
+        <input class="form-control" placeholder="@L["phone"] 1" @bind="customerModel.Phone_1" />
+        <input class="form-control" placeholder="@L["phone"] 2" @bind="customerModel.Phone_2" />
+        <input class="form-control" placeholder=@L["email"] @bind="customerModel.Email" />
+        <input class="form-control" placeholder=@L["website"] @bind="customerModel.Website" />
+        <input class="form-control" type="date" @bind="customerModel.Subscription_Date" />
+    </div>
+
+    <button class="btn btn-success" @onclick="SaveCustomer">@(isEditMode? @L["update"] : @L["add"])</button>
+    <button class="btn btn-secondary ms-2" @onclick="ClearForm">@L["cancel"]</button>
+            </span>
+
+        
+    }
+}
+
+@code {
+    private CustomerTable? customerTable;
+    private ExportTable? exportTable;
+    private bool isLoading = false;
+    Customer customerModel = new();
+    bool isEditMode = false;
+    private string searchTerm = "";
+    private int CurrentPage = 1;
+    private int PageSize = 10;
+    private int totalCount = 0;
+    private int TotalPages => (int)Math.Ceiling((double)totalCount / PageSize);
+    private bool IsPreviousDisabled => CurrentPage == 1;
+    private bool IsNextDisabled => CurrentPage >= TotalPages;
+    private int SelectedPageSize => PageSize;
+    private bool _visible = false;
+    private string _message = "";
+    private TaskCompletionSource<bool>? _tcs;
+
+    private void SetIsLoading(bool value)
+    {
+        isLoading = value;
+        StateHasChanged();
+    }
+
+    private async Task ConfirmDelete(string customerId)
+    {
+        _message = "Are you sure to you want to delete this customer ?";
+        _visible = true;
+        _tcs = new TaskCompletionSource<bool>();
+        var result = await _tcs.Task;
+
+        if (result)
+        {
+            await DeleteCustomer(customerId);
+            await customerTable.LoadCustomersAsync();
+        }
+
+
+    }
+
+    private void AssignToCustomers(List<Customer> customers){
+        exportTable.Customers = customers;
+    }
+
+    private Task HandleConfirm(bool result)
+    {
+        _visible = false;
+        _message = "";
+        _tcs?.SetResult(result);
+        StateHasChanged(); 
+        return Task.CompletedTask;
+    }
+
+    private async Task SaveCustomer()
+    {
+        if (isEditMode)
+        {
+            var existing = await db.Customers.FindAsync(customerModel.Customer_Id);
+            if (existing is not null)
+            {
+                isLoading = true;
+                StateHasChanged();
+
+                existing.First_Name = customerModel.First_Name;
+                existing.Last_Name = customerModel.Last_Name;
+                existing.Company = customerModel.Company;
+                existing.City = customerModel.City;
+                existing.Country = customerModel.Country;
+                existing.Phone_1 = customerModel.Phone_1;
+                existing.Phone_2 = customerModel.Phone_2;
+                existing.Email = customerModel.Email;
+                existing.Subscription_Date = customerModel.Subscription_Date;
+                existing.Website = customerModel.Website;
+                await db.SaveChangesAsync();
+                isLoading = false;
+                StateHasChanged();
+            }
+        }
+        else
+        {
+            isLoading = true;
+            StateHasChanged();
+            customerModel.Customer_Id = Guid.NewGuid().ToString();
+            IQueryable<Customer> query = db.Customers;
+            query = query.OrderByDescending(c => c.Index);
+            query = query.Take(1);
+            List<Customer> lastCustomer = await query.ToListAsync();
+            customerModel.Index = lastCustomer.SingleOrDefault().Index + 1;
+            db.Customers.Add(customerModel);
+            await db.SaveChangesAsync();
+            isLoading = false;
+            StateHasChanged();
+        }
+
+        ClearForm();
+    }
+
+    private void EditCustomer(Customer customer)
+    {
+        customerModel = new Customer
+        {
+            Customer_Id = customer.Customer_Id,
+            First_Name = customer.First_Name,
+            Last_Name = customer.Last_Name,
+            Company = customer.Company,
+            City = customer.City,
+            Country = customer.Country,
+            Phone_1 = customer.Phone_1,
+            Phone_2 = customer.Phone_2,
+            Email = customer.Email,
+            Subscription_Date = customer.Subscription_Date,
+            Website = customer.Website,
+        };
+        isEditMode = true;
+    }
+
+    private async Task DeleteCustomer(string customerId)
+    {
+        var customer = await db.Customers.FindAsync(customerId);
+        if (customer != null)
+        {
+
+            db.Customers.Remove(customer);
+            await db.SaveChangesAsync();
+        }
+    }
+
+    private void ClearForm()
+    {
+        customerModel = new Customer();
+        isEditMode = false;
+    }
+
+    private bool IsSelectedPageSize(int size) => PageSize == size;
+
+
+    private async Task  OnPageSizeChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int newSize))
+        {
+            PageSize = newSize;
+            CurrentPage = 1; 
+            await customerTable.LoadCustomersAsync();
+        }
+    }
+
+  
+
+    protected override void OnInitialized()
+    {
+        if (!UserSessionManager.IsAuthenticated)
+        {
+            Nav.NavigateTo("/login");
+            return;
+        }
+    }
+
+    public async Task NextPage()
+    {
+        CurrentPage = CurrentPage + 1;
+        await customerTable.LoadCustomersAsync();
+    }
+
+    private async Task PreviousPage()
+    {
+        if (CurrentPage > 1)
+        {
+            CurrentPage--;
+            await customerTable.LoadCustomersAsync();
+        }
+    }
+
+    private async Task  OnSearch()
+    {
+        CurrentPage = 1;
+         exportTable.searchTerm = searchTerm;
+        await customerTable.OnSearch(searchTerm);
+    }
+
+  
+ 
+
+
+
+}
