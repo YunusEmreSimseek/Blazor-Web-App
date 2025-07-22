@@ -1,5 +1,6 @@
-﻿@page "/customer-detail/{id:string}"
+﻿@page "/customer-detail/{customerId}"
 @using BlazorApp1.Data
+@using BlazorApp1.Models
 @using Microsoft.Extensions.Localization
 
 @rendermode InteractiveServer
@@ -9,50 +10,268 @@
 @inject NavigationManager Nav
 @inject AppDbContext _context
 @inject CustomerService _customerService
-
-
+@inject OrderService _orderService
 
 <PageTitle>@L["customerDetail"]</PageTitle>
 
 <h1>@L["customerDetail"]</h1>
 
+@if (_isLoading)
+{
 
+    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">@L["loading"]...</span>
+        </div>
+    </div>
+
+}
+else {
+    <ConfirmDialog Visible="@_visible" Message="@_message" OnClose="HandleConfirm" />
 
     <span class="mb-3">
-        <h3>@(isEditMode? @L["editCustomer"] : @L["addNewCustomer"])</h3>
+        <h3>@L["editCustomer"]</h3>
 
         <div class="mb-3">
-            <input class="form-control" placeholder=@L["firstName"] @bind="customerModel.First_Name" />
-            <input class="form-control" placeholder=@L["lastName"] @bind="customerModel.Last_Name" />
-            <input class="form-control" placeholder=@L["company"] @bind="customerModel.Company" />
-            <input class="form-control" placeholder=@L["city"] @bind="customerModel.City" />
-            <input class="form-control" placeholder=@L["country"] @bind="customerModel.Country" />
-            <input class="form-control" placeholder="@L["phone"] 1" @bind="customerModel.Phone_1" />
-            <input class="form-control" placeholder="@L["phone"] 2" @bind="customerModel.Phone_2" />
-            <input class="form-control" placeholder=@L["email"] @bind="customerModel.Email" />
-            <input class="form-control" placeholder=@L["website"] @bind="customerModel.Website" />
-            <input class="form-control" type="date" @bind="customerModel.Subscription_Date" />
+            <input class="form-control" placeholder=@L["firstName"] @bind="_editingCustomer.First_Name" />
+            <input class="form-control" placeholder=@L["lastName"] @bind="_editingCustomer.Last_Name" />
+            <input class="form-control" placeholder=@L["company"] @bind="_editingCustomer.Company" />
+            <input class="form-control" placeholder=@L["city"] @bind="_editingCustomer.City" />
+            <input class="form-control" placeholder=@L["country"] @bind="_editingCustomer.Country" />
+            <input class="form-control" placeholder="@L["phone"] 1" @bind="_editingCustomer.Phone_1" />
+            <input class="form-control" placeholder="@L["phone"] 2" @bind="_editingCustomer.Phone_2" />
+            <input class="form-control" placeholder=@L["email"] @bind="_editingCustomer.Email" />
+            <input class="form-control" placeholder=@L["website"] @bind="_editingCustomer.Website" />
+            <input class="form-control" type="date" @bind="_editingCustomer.Subscription_Date" />
         </div>
 
-        <button class="btn btn-success" @onclick="SaveCustomer">@(isEditMode? @L["update"] : @L["add"])</button>
+        <button class="btn btn-success" @onclick="SaveCustomer">@L["update"]</button>
         <button class="btn btn-secondary ms-2" @onclick="ClearForm">@L["cancel"]</button>
     </span>
 
 
+    <table class="table">
+    <thead>
+        <tr>
+            <th>@L["id"]</th>
+            <th>@L["product"]</th>
+            <th>@L["price"]</th>
+            <th>@L["quantity"]</th>
+            <th>@L["totalPrice"]</th>
+            <th>@L["orderDate"]</th>
+            <th>@L["deliveredDate"]</th>
+            <th>@L["actions"]</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in _orders)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.Product</td>
+                <td>@order.Price</td>
+                <td>@order.Quantity</td>
+                <td>@order.TotalPrice</td>
+                <td>@order.OrderDate</td>
+                <td>@order.DeliveredDate</td>
+                <td>
+                        <button class="btn btn-sm btn-primary me-1" @onclick="() => EditOrder(order)">@L["edit"]</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete(order.Id)">@L["delete"]</button> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+    <span class="mb-3">
+        <h3>@(_isOrderEditing ? L["editOrder"] : L["createOrder"])</h3>
+
+        <div class="mb-3">
+            <input class="form-control" placeholder=@L["product"] @bind="_editingOrder.Product" />
+            <input class="form-control" placeholder=@L["price"] @bind="_editingOrder.Price" />
+            <input class="form-control" placeholder=@L["quantity"] @bind="_editingOrder.Quantity" />
+            <input class="form-control" type="datetime-local" placeholder="@L["orderDate"] 1" @bind="_editingOrder.OrderDate" />
+            <input class="form-control" type="datetime-local" placeholder="@L["deliveredDate"] 2" @bind="_editingOrder.DeliveredDate" />
+        </div>
+
+        <button class="btn btn-success" @onclick="SaveOrder">@(_isOrderEditing ? L["update"] : L["create"])</button>
+        <button class="btn btn-secondary ms-2" @onclick="ClearOrder">@L["cancel"]</button>
+    </span>
+}
 
 
 @code {
-    [Parameter] public string? CustomerId { get; set; }
-    private bool _isLoading = false;
 
-    protected override void  OnInitialized()
-    { if (!(UserSessionManager.Role == Role.Director || UserSessionManager.Role == Role.Admin)) Nav.NavigateTo("/"); }
+    [Parameter] public string? customerId { get; set; }
+    private Customer _customer = new Customer();
+    private Customer _editingCustomer = new Customer();
+    private List<Order> _orders = new List<Order>();
+    private Order _editingOrder = new Order();
+    private bool _isLoading = false;
+    private bool _isOrderEditing = false;
+    private bool _visible = false;
+    private string _message = "";
+    private TaskCompletionSource<bool>? _tcs;
+
+    private async Task ConfirmDelete(int orderId)
+    {
+        _message = "Are you sure to you want to delete this order ?";
+        _visible = true;
+        _tcs = new TaskCompletionSource<bool>();
+        var result = await _tcs.Task;
+
+        if (result)
+        {
+            _isLoading = true;
+            await DeleteOrder(orderId);
+            await GetCustomerOrders();
+            _isLoading = false;
+        }
+    }
+
+    private Task HandleConfirm(bool result)
+    {
+        _visible = false;
+        _message = "";
+        _tcs?.SetResult(result);
+        StateHasChanged(); 
+        return Task.CompletedTask;
+    }
 
     private async Task GetCustomerDetail()
     {
-        if (string.IsNullOrEmpty(CustomerId)) return;
+        if (string.IsNullOrEmpty(customerId)) return;
         _isLoading = true;
+        var customer = await _customerService.GetCustomerByIdAsync(customerId);
+        if (customer != null)
+        {
+            _customer = new Customer
+            {
+                Index = customer.Index,
+                Customer_Id = customer.Customer_Id,
+                First_Name = customer.First_Name,
+                Last_Name = customer.Last_Name,
+                Company = customer.Company,
+                City = customer.City,
+                Country = customer.Country,
+                Phone_1 = customer.Phone_1,
+                Phone_2 = customer.Phone_2,
+                Email = customer.Email,
+                Website = customer.Website,
+                Subscription_Date = customer.Subscription_Date
+            };
+        _editingCustomer = new Customer
+            {
+                Index = customer.Index,
+                Customer_Id = _customer.Customer_Id,
+                First_Name = _customer.First_Name,
+                Last_Name = _customer.Last_Name,
+                Company = _customer.Company,
+                City = _customer.City,
+                Country = _customer.Country,
+                Phone_1 = _customer.Phone_1,
+                Phone_2 = _customer.Phone_2,
+                Email = _customer.Email,
+                Website = _customer.Website,
+                Subscription_Date = _customer.Subscription_Date
+            };
+        }
+        _isLoading = false;
+    }
 
+    private async Task GetCustomerOrders()
+    {
+        if (string.IsNullOrEmpty(customerId)) return;
+        _isLoading = true;
+        var orders = await _orderService.GetOrdersByCustomerIdAsync(customerId);
+        _orders = orders ?? new List<Order>();
+        _isLoading = false;
+    }
+    
+    protected override void  OnInitialized(){
+        if (!(UserSessionManager.Role == Role.Director || UserSessionManager.Role == Role.Admin)){
+             Nav.NavigateTo("/");
+             return;
+        }
+    }
+    protected override async Task  OnInitializedAsync(){
+        await GetCustomerDetail();
+        await GetCustomerOrders();
+    }
 
+    private async Task SaveCustomer()
+    {
+        if (_editingCustomer == _customer) return;
+            _isLoading = true;
+            await _customerService.UpdateCustomerAsync(_editingCustomer);
+            await GetCustomerDetail();
+            _isLoading = false;
+        
+    }
+
+    private void ClearForm(){
+        _editingCustomer = new Customer{
+            Customer_Id = _customer.Customer_Id,
+            First_Name = _customer.First_Name,
+            Last_Name = _customer.Last_Name,
+            Company = _customer.Company,
+            City = _customer.City,
+            Country = _customer.Country,
+            Phone_1 = _customer.Phone_1,
+            Phone_2 = _customer.Phone_2,
+            Email = _customer.Email,
+            Website = _customer.Website,
+            Subscription_Date = _customer.Subscription_Date
+        };
+    }
+
+    private async Task SaveOrder(){
+        if (_editingOrder == null) return;
+        _isLoading = true;
+        if (_isOrderEditing)
+        {
+            await _orderService.UpdateOrderAsync(_editingOrder);
+            ClearOrder();
+            await GetCustomerOrders();
+        }
+        else
+        {
+            _editingOrder.CustomerId = _customer.Customer_Id;
+            await _orderService.AddOrderAsync(_editingOrder);
+            ClearOrder();
+            await GetCustomerOrders();
+        }
+        _isLoading = false;
+    }
+
+    private void ClearOrder(){
+        _editingOrder = new Order();
+        _isOrderEditing = false;
+    }
+
+    private void EditOrder(Order order){
+        _editingOrder = new Order
+        {
+            Id = order.Id,
+            Product = order.Product,
+            Price = order.Price,
+            Quantity = order.Quantity,
+            TotalPrice = order.TotalPrice,
+            OrderDate = order.OrderDate,
+            DeliveredDate = order.DeliveredDate,
+            CustomerId = order.CustomerId
+        };
+        _isOrderEditing = true;
+    }
+
+    private async Task DeleteOrder(int id){
+        _isLoading = true;
+        await _orderService.DeleteOrderAsync(id);
+        _isLoading = false;
+        _orders.RemoveAll(o => o.Id == id);
     }
 }
+
+

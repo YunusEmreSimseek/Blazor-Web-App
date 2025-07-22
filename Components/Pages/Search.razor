@@ -205,7 +205,8 @@ else
 
     private void EditCustomer(Customer customer)
     {
-        customerModel = new Customer
+        Nav.NavigateTo($"/customer-detail/{customer.Customer_Id}");
+        @* customerModel = new Customer
         {
             Customer_Id = customer.Customer_Id,
             First_Name = customer.First_Name,
@@ -219,7 +220,7 @@ else
             Subscription_Date = customer.Subscription_Date,
             Website = customer.Website,
         };
-        isEditMode = true;
+        isEditMode = true; *@
     }
 
     private async Task DeleteCustomer(string customerId)

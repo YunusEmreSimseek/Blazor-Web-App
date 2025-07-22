@@ -29,6 +29,7 @@ builder.Services.AddScoped<PdfExportService>();
 builder.Services.AddScoped<CsvExportService>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddSingleton<UserSessionManager>();
 
 QuestPDF.Settings.License = LicenseType.Community;

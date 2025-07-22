@@ -17,8 +17,22 @@ namespace BlazorApp1.Models
         [Required]
         public decimal? Price { get; set; }
 
+        private decimal? _totalPrice;
+
         [Required]
-        public decimal? TotalPrice { get; set; }
+        public decimal? TotalPrice
+        {
+            get
+            {
+                if (Quantity.HasValue && Price.HasValue)
+                    return Quantity.Value * Price.Value;
+                return null;
+            }
+            set
+            {
+                _totalPrice = value;
+            }
+        }
 
         [Required]
         public DateTime? OrderDate { get; set; }
