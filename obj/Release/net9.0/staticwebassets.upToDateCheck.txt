@@ -60,6 +60,8 @@ wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\app.css
+C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\exports\12a48efa-e6a5-4ec9-9d88-504a85f445ef.csv
+C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\exports\a3257347-a3a1-4034-bb32-14a3b099a2d7.csv
 C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
@@ -104,5 +106,3 @@ C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\lib\bootstrap\dist\js\b
 C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
 C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
-C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\exports\12a48efa-e6a5-4ec9-9d88-504a85f445ef.csv
-C:\Users\emre\source\repos\BlazorApp1\BlazorApp1\wwwroot\exports\a3257347-a3a1-4034-bb32-14a3b099a2d7.csv

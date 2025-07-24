@@ -20,15 +20,15 @@ namespace BlazorApp1.Services
 
         public async Task<List<Order>?> GetOrdersByCustomerIdAsync(string customerId)
         {
-            return await _context.Orders.Where(o => o.CustomerId == customerId).OrderBy(o => o.OrderDate).ToListAsync();
+            return await _context.Orders
+            .Where(o => o.CustomerId == customerId)
+            .Include(o => o.Product)
+            .OrderBy(o => o.OrderDate).ToListAsync();
         }
     
 
         public async Task AddOrderAsync(Order order)
         {
-            order.TotalPrice = order.Quantity.HasValue && order.Price.HasValue
-                ? order.Quantity.Value * order.Price.Value
-                : 0; 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
         }
@@ -36,17 +36,15 @@ namespace BlazorApp1.Services
         public async Task UpdateOrderAsync(Order order)
         {
             var existingOrder = await _context.Orders.FindAsync(order.Id);
-    if (existingOrder != null)
-    {
-        existingOrder.Product = order.Product;
-        existingOrder.Price = order.Price;
-        existingOrder.Quantity = order.Quantity;
-        existingOrder.TotalPrice = order.Quantity.HasValue && order.Price.HasValue
-            ? order.Quantity.Value * order.Price.Value
-            : 0; 
-        existingOrder.OrderDate = order.OrderDate;
-        existingOrder.DeliveredDate = order.DeliveredDate;
-        await _context.SaveChangesAsync();
+            if (existingOrder != null)
+            {
+                existingOrder.Product = order.Product;
+                existingOrder.ProductId = order.ProductId;
+                existingOrder.Quantity = order.Quantity;
+                existingOrder.TotalPrice = order.TotalPrice;
+                existingOrder.OrderDate = order.OrderDate;
+                existingOrder.DeliveredDate = order.DeliveredDate;
+                await _context.SaveChangesAsync();
     }
         }
 

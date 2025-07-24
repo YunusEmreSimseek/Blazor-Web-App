@@ -1,0 +1,352 @@
+@page "/products"
+@using BlazorApp1.Data
+@using BlazorApp1.Models
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.Extensions.Localization
+@using static BlazorApp1.Components.Pages.CustomerTable
+
+@rendermode InteractiveServer
+
+@inject AppDbContext _context
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@inject UserSessionManager UserSessionManager
+@inject ProductService _productService
+@inject NavigationManager Nav
+
+<ConfirmDialog Visible="@_visible" Message="@_message" OnClose="HandleConfirm" />
+
+<PageTitle>@L["products"]</PageTitle>
+
+<h1>@L["products"]</h1>
+
+@if(_isLoading)
+{
+<div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">@L["loading"]...</span>
+        </div>
+    </div>
+}
+
+
+else
+{
+<p role="status">@L["productCount"]: @_totalCount</p>
+    <div class="input-group mb-3" style="max-width: 400px;">
+        <input type="text" class="form-control mb-3" placeholder="@L["search"]..." @bind="_searchTerm" />
+        <button class="btn btn-primary" @onclick="OnSearch">@L["search"]</button>
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-secondary me-2" @onclick="PreviousPage" disabled="@IsPreviousDisabled">⟨ @L["previous"]</button>
+        <span>@L["page"]e @_currentPage / @TotalPages</span>
+        <button class="btn btn-secondary ms-2" @onclick="NextPage" disabled="@IsNextDisabled">@L["next"] ⟩</button>
+    </div>
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <p class="mb-0">@L["pageSize"]: </p>
+
+        <select class="form-select w-auto" @onchange="OnPageSizeChanged">
+            <option value="10" selected="@IsSelectedPageSize(10)">10</option>
+            <option value="50" selected="@IsSelectedPageSize(50)">50</option>
+            <option value="100" selected="@IsSelectedPageSize(100)">100</option>
+        </select>
+    </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th @onclick="() => SortBy(SortProductColumn.Id)">
+                @L["id"]
+                @(_selectedSortColumn == SortProductColumn.Id
+                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                : "")
+            </th>
+            <th @onclick="() => SortBy(SortProductColumn.Name)">
+                @L["name"]
+                @(_selectedSortColumn == SortProductColumn.Name
+                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                : "")
+            </th>
+            <th @onclick="() => SortBy(SortProductColumn.Price)">
+                @L["price"]
+                @(_selectedSortColumn == SortProductColumn.Price
+                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                : "")
+            </th>
+            <th @onclick="() => SortBy(SortProductColumn.CreatedAt)">
+                @L["createdAt"]
+                @(_selectedSortColumn == SortProductColumn.CreatedAt
+                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                : "")
+            </th>
+                <th>@L["actions"]</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in _products)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.CreatedAt</td>
+                <td>
+                        <button class="btn btn-sm btn-primary me-1" @onclick="() => EditProduct(product)">@L["edit"]</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete(product.Id)">@L["delete"]</button>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<span class="mb-3">
+                <h3>@(_isEditMode? @L["editProduct"] : @L["addNewProduct"])</h3>
+
+    @if(_isEditMode){
+        <div class="mb-3">
+            <input class="form-control" placeholder=@L["name"] @bind="_editingProduct.Name" />
+            <input class="form-control" placeholder=@L["price"] @bind="_editingProduct.Price" />
+        </div>
+    }
+    else {
+        <div class="mb-3">
+            <input class="form-control" placeholder=@L["name"] @bind="_editingProduct.Name" />
+            <input class="form-control" placeholder=@L["price"] @bind="_editingProduct.Price" />
+        </div>
+    }
+
+<button class="btn btn-success" @onclick="SaveProduct">@(_isEditMode? @L["update"] : @L["add"])</button>
+<button class="btn btn-secondary ms-2" @onclick="ClearForm">@L["cancel"]</button>
+            </span>
+
+
+
+
+}
+
+
+
+
+
+
+
+
+@code{
+    private bool _isLoading = false;
+    private int _currentPage = 1;
+    private int _pageSize = 10;
+    private int _totalCount = 0;
+    private string _searchTerm = "";
+    private int TotalPages => (int)Math.Ceiling((double)_totalCount / _pageSize);
+    private bool IsPreviousDisabled => _currentPage == 1;
+    private bool IsNextDisabled => _currentPage >= TotalPages;
+    private int SelectedPageSize => _pageSize;
+    private bool _isEditMode = false;
+    private List<Product> _products = new List<Product>();
+    private Product _editingProduct = new Product();
+    private SortDirection _selectedSortDirection { get; set; }
+    private SortProductColumn _selectedSortColumn { get; set; }
+    private bool _visible = false;
+    private string _message = "";
+    private TaskCompletionSource<bool>? _tcs;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await  LoadProductsAsync();
+    }
+    protected override void OnInitialized(){
+        if(!UserSessionManager.IsAuthenticated || UserSessionManager.Role != Role.Admin){
+            Nav.NavigateTo("/");
+        }
+    }
+    private async Task ConfirmDelete(int productId)
+    {
+        var orders = await _context.Orders.Where(o => o.ProductId == productId).ToListAsync();
+        if (orders.Any())
+        {
+            _message = "This product is associated with existing orders and cannot be deleted. Please remove the product from customer order, then you may delete it !";
+            _visible = true;
+            StateHasChanged();
+            _tcs = new TaskCompletionSource<bool>();
+            var result = await _tcs.Task;
+
+            if (result)
+            {
+            }
+            return;
+        }
+        else {
+            _message = "Are you sure to you want to delete this product ?";
+        _visible = true;
+        StateHasChanged();
+        _tcs = new TaskCompletionSource<bool>();
+        var result = await _tcs.Task;
+
+        if (result)
+        {
+            await DeleteProduct(productId);
+        }
+        }
+    }
+    private Task HandleConfirm(bool result)
+    {
+        _visible = false;
+        _message = "";
+        _tcs?.SetResult(result);
+        StateHasChanged(); 
+        return Task.CompletedTask;
+    }
+    private async Task DeleteProduct(int productId){
+        await _productService.DeleteProductAsync(productId);
+        await LoadProductsAsync();
+        ClearForm();
+        }
+
+    private async Task SaveProduct()
+    {
+        if (_editingProduct == null || string.IsNullOrEmpty(_editingProduct.Name) || _editingProduct.Price <= 0) return;
+        if (_isEditMode && _editingProduct.Id > 0)
+        {
+                _isLoading = true;
+                StateHasChanged();
+                await _productService.UpdateProductAsync(_editingProduct);
+                _isLoading = false;
+                StateHasChanged();
+            
+        }
+        else if (!string.IsNullOrEmpty(_editingProduct.Name) && _editingProduct.Price > 0)
+        {
+            _isLoading = true;
+            StateHasChanged();
+            await _productService.AddProductAsync(_editingProduct);
+            _isLoading = false;
+            StateHasChanged();
+        }
+        await LoadProductsAsync();
+        ClearForm();
+    }
+    private void EditProduct(Product product)
+    {
+        _editingProduct = new Product
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price,
+        };
+        _isEditMode = true;
+    }
+    private async Task SortBy(SortProductColumn column)
+    {
+        if (_selectedSortColumn == column)
+        {
+            _selectedSortDirection = _selectedSortDirection == SortDirection.Ascending
+                ? SortDirection.Descending
+                : SortDirection.Ascending;
+        }
+        else
+        {
+            _selectedSortColumn = column;
+            _selectedSortDirection = SortDirection.Ascending;
+        }
+
+        _currentPage = 1;
+        await LoadProductsAsync();
+
+    }
+    private async Task LoadProductsAsync(){
+        if (_isLoading) return;
+
+        _isLoading = true;
+        StateHasChanged();
+
+        IQueryable<Product> query = _context.Products;
+
+        if (!string.IsNullOrWhiteSpace(_searchTerm) && _searchTerm.Length >= 2)
+        {
+            query = query.Where(c =>
+            (c.Name != null && c.Name.Contains(_searchTerm)) ||
+            ( c.Price.ToString().Contains(_searchTerm)));
+        } 
+
+        _totalCount = await query.CountAsync();
+
+        if (_selectedSortDirection == SortDirection.Ascending)
+        {
+            switch (_selectedSortColumn)
+            {
+                case SortProductColumn.Id: query = query.OrderBy(c => c.Id); break;
+                case SortProductColumn.Name: query = query.OrderBy(c => c.Name); break;
+                case SortProductColumn.Price: query = query.OrderBy(c => c.Price); break;
+                default: query = query.OrderBy(c => c.Name); break;
+            }
+        }
+        else if (_selectedSortDirection == SortDirection.Descending)
+        {
+            switch (_selectedSortColumn)
+            {
+                case SortProductColumn.Name: query = query.OrderByDescending(c => c.Name); break;
+                case SortProductColumn.Price: query = query.OrderByDescending(c => c.Price); break;
+                case SortProductColumn.Id: query = query.OrderByDescending(c => c.Id); break;
+                default: query = query.OrderByDescending(c => c.Name); break;
+            }
+        } 
+
+        query = query.Skip((_currentPage - 1) * _pageSize);
+        query = query.Take(_pageSize);
+
+        _products = await query.ToListAsync();
+        _isLoading = false;
+        StateHasChanged();
+    }
+
+    private bool IsSelectedPageSize(int size) => _pageSize == size;
+
+
+    private async Task  OnPageSizeChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int newSize))
+        {
+            _pageSize = newSize;
+            _currentPage = 1;
+            await LoadProductsAsync();
+        }
+    }
+
+
+    public async Task NextPage()
+    {
+        _currentPage = _currentPage + 1;
+        await LoadProductsAsync();
+    }
+
+    private async Task PreviousPage()
+    {
+        if (_currentPage > 1)
+        {
+            _currentPage--;
+            await LoadProductsAsync();
+        }
+    }
+
+    private async Task  OnSearch()
+    {
+        _currentPage = 1;
+        await LoadProductsAsync();
+        
+    }
+
+    private void ClearForm()
+    {
+        _editingProduct = new();
+        _isEditMode = false;
+    }
+    private enum SortProductColumn
+    {
+        Id,
+        Name,
+        Price,
+        CreatedAt
+    }
+}

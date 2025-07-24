@@ -147,6 +147,22 @@ else
     private bool isLoading = false;
     private int totalCount = 0;
 
+    private async Task DeleteCustomer(string customerId){
+        var customer = await _context.Customers.FindAsync(customerId);
+        if (customer != null)
+        {
+            var orders = await _context.Orders.Where(o => o.CustomerId == customerId).ToListAsync();
+            if (orders.Any())
+            {
+               @* await ConfirmDelete.InvokeAsync(customerId, true); *@
+            }
+            else
+            {
+              @* await  ConfirmDelete.InvokeAsync(customerId, false); *@
+            }
+        }
+    }
+
      private async Task SortBy(SortColumn column)
     {
         if (CurrentSortColumn == column)
@@ -206,44 +222,44 @@ else
 
 
 
-        //   if (SelectedSortDirection == SortDirection.Ascending)
-        // {
-        //     switch (CurrentSortColumn)
-        //     {
-        //         case SortColumn.Index: query = query.OrderBy(c => c.Index); break;
-        //         case SortColumn.Id: query = query.OrderBy(c => c.Customer_Id); break;
-        //         case SortColumn.FirstName: query = query.OrderBy(c => c.First_Name); break;
-        //         case SortColumn.LastName: query = query.OrderBy(c => c.Last_Name); break;
-        //         case SortColumn.Company: query = query.OrderBy(c => c.Company); break;
-        //         case SortColumn.City: query = query = query.OrderBy(c => c.City); break;
-        //         case SortColumn.Country: query = query.OrderBy(c => c.Country); break;
-        //         case SortColumn.Phone1: query = query.OrderBy(c => c.Phone_1); break;
-        //         case SortColumn.Phone2: query = query.OrderBy(c => c.Phone_2); break;
-        //         case SortColumn.Email: query = query.OrderBy(c => c.Email); break;
-        //         case SortColumn.SubDate: query = query.OrderBy(c => c.Subscription_Date); break;
-        //         case SortColumn.Website: query = query.OrderBy(c => c.Website); break;
-        //         default: query = query.OrderBy(c => c.Index); break;
-        //     }
-        // }
-        // else if (SelectedSortDirection == SortDirection.Descending)
-        // {
-        //     switch (CurrentSortColumn)
-        //     {
-        //         case SortColumn.Index: query = query.OrderByDescending(c => c.Index); break;
-        //         case SortColumn.Id: query = query.OrderByDescending(c => c.Customer_Id); break;
-        //         case SortColumn.FirstName: query = query.OrderByDescending(c => c.First_Name); break;
-        //         case SortColumn.LastName: query = query.OrderByDescending(c => c.Last_Name); break;
-        //         case SortColumn.Company: query = query.OrderByDescending(c => c.Company); break;
-        //         case SortColumn.City: query = query.OrderByDescending(c => c.City); break;
-        //         case SortColumn.Country: query = query.OrderByDescending(c => c.Country); break;
-        //         case SortColumn.Phone1: query = query.OrderByDescending(c => c.Phone_1); break;
-        //         case SortColumn.Phone2: query = query.OrderByDescending(c => c.Phone_2); break;
-        //         case SortColumn.Email: query = query.OrderByDescending(c => c.Email); break;
-        //         case SortColumn.SubDate: query = query.OrderByDescending(c => c.Subscription_Date); break;
-        //         case SortColumn.Website: query = query.OrderByDescending(c => c.Website); break;
-        //         default: query = query.OrderByDescending(c => c.Index); break;
-        //     }
-        // }  
+          @* if (SelectedSortDirection == SortDirection.Ascending)
+        {
+            switch (CurrentSortColumn)
+            {
+                case SortColumn.Index: query = query.OrderBy(c => c.Index); break;
+                case SortColumn.Id: query = query.OrderBy(c => c.Customer_Id); break;
+                case SortColumn.FirstName: query = query.OrderBy(c => c.First_Name); break;
+                case SortColumn.LastName: query = query.OrderBy(c => c.Last_Name); break;
+                case SortColumn.Company: query = query.OrderBy(c => c.Company); break;
+                case SortColumn.City: query = query = query.OrderBy(c => c.City); break;
+                case SortColumn.Country: query = query.OrderBy(c => c.Country); break;
+                case SortColumn.Phone1: query = query.OrderBy(c => c.Phone_1); break;
+                case SortColumn.Phone2: query = query.OrderBy(c => c.Phone_2); break;
+                case SortColumn.Email: query = query.OrderBy(c => c.Email); break;
+                case SortColumn.SubDate: query = query.OrderBy(c => c.Subscription_Date); break;
+                case SortColumn.Website: query = query.OrderBy(c => c.Website); break;
+                default: query = query.OrderBy(c => c.Index); break;
+            }
+        }
+        else if (SelectedSortDirection == SortDirection.Descending)
+        {
+            switch (CurrentSortColumn)
+            {
+                case SortColumn.Index: query = query.OrderByDescending(c => c.Index); break;
+                case SortColumn.Id: query = query.OrderByDescending(c => c.Customer_Id); break;
+                case SortColumn.FirstName: query = query.OrderByDescending(c => c.First_Name); break;
+                case SortColumn.LastName: query = query.OrderByDescending(c => c.Last_Name); break;
+                case SortColumn.Company: query = query.OrderByDescending(c => c.Company); break;
+                case SortColumn.City: query = query.OrderByDescending(c => c.City); break;
+                case SortColumn.Country: query = query.OrderByDescending(c => c.Country); break;
+                case SortColumn.Phone1: query = query.OrderByDescending(c => c.Phone_1); break;
+                case SortColumn.Phone2: query = query.OrderByDescending(c => c.Phone_2); break;
+                case SortColumn.Email: query = query.OrderByDescending(c => c.Email); break;
+                case SortColumn.SubDate: query = query.OrderByDescending(c => c.Subscription_Date); break;
+                case SortColumn.Website: query = query.OrderByDescending(c => c.Website); break;
+                default: query = query.OrderByDescending(c => c.Index); break;
+            }
+        }   *@
 
         query = query.Skip((CurrentPage - 1) * PageSize);
         query = query.Take(PageSize);

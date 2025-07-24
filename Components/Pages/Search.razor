@@ -132,15 +132,38 @@ else
 
     private async Task ConfirmDelete(string customerId)
     {
-        _message = "Are you sure to you want to delete this customer ?";
-        _visible = true;
-        _tcs = new TaskCompletionSource<bool>();
-        var result = await _tcs.Task;
+        var customer = await db.Customers.FindAsync(customerId);
+        if (customer != null){
+            var orders = await db.Orders.Where(o => o.CustomerId == customerId).ToListAsync();
+            if (orders.Count == 0)
+            {
+                _message = "There are no orders for this customer, You are sure you want to delete the customer ?";
+                _visible = true;
+                StateHasChanged();
+                _tcs = new TaskCompletionSource<bool>();
+                var result = await _tcs.Task;
+
+                if (result)
+                {
+                    await DeleteCustomer(customerId);
+                    await customerTable.LoadCustomersAsync();
+                }
+                return;
+            }
+            else
+            {
+                _message =  "You are sure you want to delete the customer including all orders ?";
+                _visible = true;
+                StateHasChanged();
+                _tcs = new TaskCompletionSource<bool>();
+                    var result = await _tcs.Task;
 
         if (result)
         {
             await DeleteCustomer(customerId);
             await customerTable.LoadCustomersAsync();
+        }
+            }
         }
 
 
@@ -206,21 +229,6 @@ else
     private void EditCustomer(Customer customer)
     {
         Nav.NavigateTo($"/customer-detail/{customer.Customer_Id}");
-        @* customerModel = new Customer
-        {
-            Customer_Id = customer.Customer_Id,
-            First_Name = customer.First_Name,
-            Last_Name = customer.Last_Name,
-            Company = customer.Company,
-            City = customer.City,
-            Country = customer.Country,
-            Phone_1 = customer.Phone_1,
-            Phone_2 = customer.Phone_2,
-            Email = customer.Email,
-            Subscription_Date = customer.Subscription_Date,
-            Website = customer.Website,
-        };
-        isEditMode = true; *@
     }
 
     private async Task DeleteCustomer(string customerId)
