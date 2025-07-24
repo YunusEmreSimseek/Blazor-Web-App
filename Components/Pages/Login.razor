@@ -8,6 +8,7 @@
 @inject UserSessionManager UserSessionManager
 @inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
 @inject ILocalStorageService LocalStorageService
+@inject IExchangeService ExchangeService
 
 
 
@@ -26,6 +27,7 @@
     </div>
 
     <button class="btn btn-primary" type="submit">@L["login"]</button>
+    
 </EditForm>
 
 @if (!string.IsNullOrEmpty(message))

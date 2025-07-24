@@ -57,25 +57,25 @@ else
             <th @onclick="() => SortBy(SortProductColumn.Id)">
                 @L["id"]
                 @(_selectedSortColumn == SortProductColumn.Id
-                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (_selectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortProductColumn.Name)">
                 @L["name"]
                 @(_selectedSortColumn == SortProductColumn.Name
-                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (_selectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortProductColumn.Price)">
                 @L["price"]
                 @(_selectedSortColumn == SortProductColumn.Price
-                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (_selectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortProductColumn.CreatedAt)">
                 @L["createdAt"]
                 @(_selectedSortColumn == SortProductColumn.CreatedAt
-                                ? (_selectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (_selectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
                 <th>@L["actions"]</th>
@@ -145,7 +145,7 @@ else
     private bool _isEditMode = false;
     private List<Product> _products = new List<Product>();
     private Product _editingProduct = new Product();
-    private SortDirection _selectedSortDirection { get; set; }
+    private TableSortDirection _selectedSortDirection { get; set; }
     private SortProductColumn _selectedSortColumn { get; set; }
     private bool _visible = false;
     private string _message = "";
@@ -241,14 +241,14 @@ else
     {
         if (_selectedSortColumn == column)
         {
-            _selectedSortDirection = _selectedSortDirection == SortDirection.Ascending
-                ? SortDirection.Descending
-                : SortDirection.Ascending;
+            _selectedSortDirection = _selectedSortDirection == TableSortDirection.Ascending
+                ? TableSortDirection.Descending
+                : TableSortDirection.Ascending;
         }
         else
         {
             _selectedSortColumn = column;
-            _selectedSortDirection = SortDirection.Ascending;
+            _selectedSortDirection = TableSortDirection.Ascending;
         }
 
         _currentPage = 1;
@@ -272,7 +272,7 @@ else
 
         _totalCount = await query.CountAsync();
 
-        if (_selectedSortDirection == SortDirection.Ascending)
+        if (_selectedSortDirection == TableSortDirection.Ascending)
         {
             switch (_selectedSortColumn)
             {
@@ -282,7 +282,7 @@ else
                 default: query = query.OrderBy(c => c.Name); break;
             }
         }
-        else if (_selectedSortDirection == SortDirection.Descending)
+        else if (_selectedSortDirection == TableSortDirection.Descending)
         {
             switch (_selectedSortColumn)
             {

@@ -60,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/emresimsek/VSCodeProjects/Blazor-Web-App/Components/Pages/Exchanges.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FeGNoYW5nZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/emresimsek/VSCodeProjects/Blazor-Web-App/Components/Pages/ExportTable.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FeHBvcnRUYWJsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

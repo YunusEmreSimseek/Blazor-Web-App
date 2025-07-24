@@ -24,73 +24,73 @@ else
             <th @onclick="() => SortBy(SortColumn.Index)">
                 @L["index"]
                 @(SelectedSortColumn == SortColumn.Index
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.Id)">
                 @L["id"]
                 @(SelectedSortColumn == SortColumn.Id
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.FirstName)">
                 @L["name"]
                 @(SelectedSortColumn == SortColumn.FirstName
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.LastName)">
                 @L["surname"]
                 @(SelectedSortColumn == SortColumn.LastName
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.Company)">
                 @L["company"]
                 @(SelectedSortColumn == SortColumn.Company
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.City)">
                 @L["city"]
                 @(SelectedSortColumn == SortColumn.City
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.Country)">
                 @L["country"]
                 @(SelectedSortColumn == SortColumn.Country
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.Phone1)">
                 @L["phone"]1
                 @(SelectedSortColumn == SortColumn.Phone1
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.Phone2)">
                 @L["phone"]2
                 @(SelectedSortColumn == SortColumn.Phone2
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.Email)">
                 @L["email"]
                 @(SelectedSortColumn == SortColumn.Email
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.SubDate)">
                 @L["subDate"]
                 @(SelectedSortColumn == SortColumn.SubDate
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             <th @onclick="() => SortBy(SortColumn.Website)">
                 @L["website"]
                 @(SelectedSortColumn == SortColumn.Website
-                                ? (SelectedSortDirection == SortDirection.Ascending ? " ↑" : " ↓")
+                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
                                 : "")
             </th>
             @if (UserSessionManager.IsAuthenticated && UserSessionManager.Role != Role.User && UserSessionManager.Role != Role.Manager){
@@ -141,7 +141,7 @@ else
     [Parameter] public EventCallback<List<Customer>> OnCustomerChanged { get; set; }
     public string SearchTerm = "";
     public List<Customer>? Customers = [];
-    private SortDirection SelectedSortDirection { get; set; }
+    private TableSortDirection SelectedSortDirection { get; set; }
     private SortColumn SelectedSortColumn { get; set; }
     private SortColumn CurrentSortColumn = SortColumn.Index;
     private bool isLoading = false;
@@ -167,14 +167,14 @@ else
     {
         if (CurrentSortColumn == column)
         {
-            SelectedSortDirection = SelectedSortDirection == SortDirection.Ascending
-                ? SortDirection.Descending
-                : SortDirection.Ascending;
+            SelectedSortDirection = SelectedSortDirection == TableSortDirection.Ascending
+                ? TableSortDirection.Descending
+                : TableSortDirection.Ascending;
         }
         else
         {
             CurrentSortColumn = column;
-            SelectedSortDirection = SortDirection.Ascending;
+            SelectedSortDirection = TableSortDirection.Ascending;
         }
 
         CurrentPage = 1;
@@ -271,7 +271,7 @@ else
 
     }
 
-     public  enum SortDirection
+     public  enum TableSortDirection
     {
         Ascending,
         Descending

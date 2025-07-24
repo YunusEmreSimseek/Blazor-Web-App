@@ -46,7 +46,7 @@
     private ExportFormat selectedFormat = ExportFormat.PDF;
     private string fileUrl;
 
-    public SortDirection SelectedSortDirection = SortDirection.Ascending;
+    public TableSortDirection SelectedSortDirection = TableSortDirection.Ascending;
     public SortColumn CurrentSortColumn = SortColumn.Index;
 
 
@@ -106,7 +106,7 @@
             (c.Website != null && c.Website.Contains(searchTerm)));
         }
 
-         if (SelectedSortDirection == SortDirection.Ascending)
+         if (SelectedSortDirection == TableSortDirection.Ascending)
         {
             switch (CurrentSortColumn)
             {
@@ -125,7 +125,7 @@
                 default: query = query.OrderBy(c => c.Index); break;
             }
         }
-        else if (SelectedSortDirection == SortDirection.Descending)
+        else if (SelectedSortDirection == TableSortDirection.Descending)
         {
             switch (CurrentSortColumn)
             {

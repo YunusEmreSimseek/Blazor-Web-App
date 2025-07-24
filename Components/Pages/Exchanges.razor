@@ -1,0 +1,190 @@
+@page "/exchanges"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using BlazorApp1.Models
+@using Microsoft.Extensions.Localization
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@inject IExchangeService ExchangeService
+
+
+<PageTitle>@L["exchanges"]</PageTitle>
+
+<h1>@L["exchanges"]</h1>
+
+@if(_isLoading)
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">@L["loading"]...</span>
+        </div>
+    </div>
+}
+else {
+    @if(_exchanges.Count == 0)
+    {
+        <div class="w-25">
+            <p>Please select dates you want to see exchange rates</p>
+            <input class="form-control" type="date" placeholder="@L["startDate"]" @bind="_startDate" />
+            <input class="form-control" type="date" placeholder="@L["endDate"]" @bind="_endDate" />
+            <button class="btn btn-primary" type="button" @onclick="HandleRedraw">@L["getExchangeRates"]</button>
+        </div>
+
+        
+
+    }
+    else {
+
+        <RadzenChart Style="height: 400px; width: 100%;">
+    <RadzenLineSeries 
+        Data="@sredenValues" 
+        CategoryProperty="DateLabel" 
+        ValueProperty="Rate"
+        Title="EUR Exchange Rates"
+        LineType="LineType.Dotted"
+        Stroke="#007bff"
+        Smooth="true" />
+
+    <RadzenCategoryAxis LabelRotation="90"/>
+    
+    <RadzenValueAxis>
+        <RadzenNumericScale />
+    </RadzenValueAxis>
+</RadzenChart>
+
+        <table class="table">
+    <thead>
+        <tr>
+            @* <th> RBr  </th> *@
+            <th> Datum  </th>
+            @* <th> Valuta  </th> *@
+            <th> Nomin  </th>
+            <th> Oznaka  </th>
+            @* <th> Drzava  </th> *@
+            <th> Drzava  </th>
+            @* <th> DrzavaAl  </th> *@
+            @* <th> NazivMak  </th> *@
+            <th> Naziv  </th>
+            @* <th> NazivAl  </th> *@
+            <th> Sreden  </th>
+            <th> Kupoven  </th>
+            <th> Prodazen  </th>
+            @* <th> Datum_f  </th> *@
+
+                
+            
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exchange in _exchanges)
+        {
+            <tr>
+                @* <td>@exchange.RBr</td> *@
+                <td>@exchange.Datum</td>
+                @* <td>@exchange.Valuta</td> *@
+                <td>@exchange.Nomin</td>
+                <td>@exchange.Oznaka</td>
+                @* <td>@exchange.Drzava</td> *@
+                <td>@exchange.DrzavaAng</td>
+                @* <td>@exchange.DrzavaAl</td> *@
+                @* <td>@exchange.NazivMak</td> *@
+                <td>@exchange.NazivAng</td>
+                @* <td>@exchange.NazivAl</td> *@
+                <td>@exchange.Sreden</td>
+                <td>@exchange.Kupoven</td>
+                <td>@exchange.Prodazen</td>
+                @* <td>@exchange.Datum_f</td> *@
+            </tr>
+        }
+    </tbody>
+        </table>
+
+        
+    }
+}
+
+@code{
+    private List<ExchangeRate> _exchanges = new();
+    private bool _isLoading = false;
+    private DateTime _startDate = DateTime.Now;
+    private DateTime _endDate = DateTime.Now;
+    private string _message = "";
+
+    private List<ChartDataModel> sredenValues = new();
+
+    private async Task GetExchangeRates()
+    {
+        _isLoading = true;
+        try
+        {
+            if (_startDate == default || _endDate == default)
+            {
+                _message = "Start date and end date must be selected.";
+                return;
+            }
+
+            var exchanges = await ExchangeService.GetExchangeRatesAsync(_startDate, _endDate);
+            if (exchanges is null || exchanges.Count == 0)
+            {
+                _message = "No exchange rates found for the selected dates.";
+                return;
+            }
+
+            _exchanges = exchanges;
+            _message = "";
+            @* await HandleRedraw(); *@
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching exchange rates: {ex.Message}");
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task HandleRedraw()
+    {
+        
+
+        await GetExchangeRates();
+        StateHasChanged();
+
+
+        string[] labels = _exchanges
+            .Select(e => e.Datum.ToString("dd-MM-yyyy"))
+            .Distinct()
+            .ToArray();
+
+        List<double> values = _exchanges
+            .Where(e => e.Oznaka == "EUR")
+            .Select(e => e.Sreden)
+            .ToList();
+
+        sredenValues = new List<ChartDataModel>();
+        for (int i = 0; i < labels.Length; i++)
+        {
+            double rounded = Math.Round(values[i], 2);
+            sredenValues.Add(new ChartDataModel
+            {
+                DateLabel = labels[i],
+                Rate = i < values.Count ? rounded : 0
+            });
+        }
+        StateHasChanged();
+
+    }
+ 
+
+
+    public class ChartDataModel
+    {
+        public string DateLabel { get; set; }
+        public double Rate { get; set; }
+}
+    }
+    
+}

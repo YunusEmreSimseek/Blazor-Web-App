@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.JSInterop;
 using QuestPDF.Infrastructure;
+using Radzen;
 using System.Globalization;
 using AppDbContext = BlazorApp1.Data.AppDbContext;
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +25,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 
 builder.Services.AddBlazoredLocalStorage();
 
-builder.Services.AddSingleton<DialogService>();
+builder.Services.AddSingleton<CustomDialogService>();
 builder.Services.AddScoped<PdfExportService>();
 builder.Services.AddScoped<CsvExportService>();
 builder.Services.AddScoped<CustomerService>();
@@ -32,6 +33,15 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddSingleton<UserSessionManager>();
+builder.Services.AddScoped<IExchangeService, ExchangeService>();
+builder.Services.AddHttpClient<IExchangeService, ExchangeService>(client =>
+{
+    client.BaseAddress = new Uri("https://www.nbrm.mk/KLServiceNOV/");
+});
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
 
 QuestPDF.Settings.License = LicenseType.Community;
 

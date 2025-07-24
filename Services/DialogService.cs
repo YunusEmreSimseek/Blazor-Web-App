@@ -1,6 +1,6 @@
 ﻿namespace BlazorApp1.Services
 {
-    public class DialogService
+    public class CustomDialogService
     {
         private Func<string, Task<bool>>? _callback;
 
