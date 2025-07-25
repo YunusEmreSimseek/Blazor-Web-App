@@ -3,6 +3,8 @@
 @using System.ComponentModel.DataAnnotations
 @using BlazorApp1.Models
 @using Microsoft.Extensions.Localization
+@using ApexCharts
+@using Microsoft.AspNetCore.Components
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
 @inject IExchangeService ExchangeService
@@ -34,10 +36,14 @@ else
     else
     {
 
-        <ApexChart TItem="ChartDataModel" Title="Sample Data">
+        <ApexChart TItem="ChartDataModel" Title="Exchange Rates">
 
             <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 EUR" SeriesType="SeriesType.Line"
-                XValue="e => e.DateLabel" YValue="e=> e.Rate" />
+                XValue="e => e.DateLabel" YValue="e=> e.EurRate" />
+            <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 USD" SeriesType="SeriesType.Line"
+                XValue="e => e.DateLabel" YValue="e=> e.UsdRate" />
+            <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 TRY" SeriesType="SeriesType.Line"
+                XValue="e => e.DateLabel" YValue="e=> e.TryRate" />
 
         </ApexChart>
 
@@ -145,19 +151,34 @@ else
         .Distinct()
         .ToArray();
 
-        List<double> values = _exchanges
-        .Where(e => e.Oznaka == "EUR")
+        List<double> _eurValues = _exchanges
+         .Where(e => e.Oznaka == "EUR") 
+        .Select(e => e.Sreden)
+        .ToList();
+
+        List<double> _usdValues = _exchanges
+         .Where(e => e.Oznaka == "USD") 
+        .Select(e => e.Sreden)
+        .ToList();
+
+        List<double> _tryValues = _exchanges
+         .Where(e => e.Oznaka == "TRY") 
         .Select(e => e.Sreden)
         .ToList();
 
         _chartData = new List<ChartDataModel>();
         for (int i = 0; i < labels.Length; i++)
         {
-            double rounded = Math.Round(values[i], 2);
+            double roundedEur = Math.Round(_eurValues[i], 2);
+            double roundedUsd = Math.Round(_usdValues[i], 2);
+            double roundedTry = Math.Round(_tryValues[i], 2);
+
             _chartData.Add(new ChartDataModel
             {
                 DateLabel = labels[i],
-                Rate = i < values.Count ? (decimal)rounded : 0
+                EurRate = i < _eurValues.Count ? (decimal)roundedEur : 0,
+                UsdRate = i < _usdValues.Count ? (decimal)roundedUsd : 0,
+                TryRate = i < _tryValues.Count ? (decimal)roundedTry : 0
             });
         }
         StateHasChanged();
@@ -168,8 +189,10 @@ else
 
     public class ChartDataModel
     {
-        public string DateLabel { get; set; }
-        public decimal Rate { get; set; }
+        public string DateLabel { get; set; } = string.Empty;
+        public decimal EurRate { get; set; }
+        public decimal TryRate { get; set; }
+        public decimal UsdRate { get; set; }
     }
 }
 
