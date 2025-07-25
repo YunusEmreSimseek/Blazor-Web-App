@@ -8,11 +8,11 @@
     ".NETCoreApp,Version=v9.0": {
       "BlazorApp1/1.0.0": {
         "dependencies": {
+          "Blazor-ApexCharts": "6.0.1",
           "Blazored.LocalStorage": "4.5.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.7",
           "Microsoft.EntityFrameworkCore.Tools": "9.0.7",
-          "QuestPDF": "2025.7.0",
-          "Radzen.Blazor": "7.1.6"
+          "QuestPDF": "2025.7.0"
         },
         "runtime": {
           "BlazorApp1.dll": {}
@@ -61,9 +61,22 @@
           }
         }
       },
+      "Blazor-ApexCharts/6.0.1": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components": "9.0.2",
+          "Microsoft.AspNetCore.Components.Web": "9.0.2",
+          "Microsoft.Extensions.Http": "9.0.2"
+        },
+        "runtime": {
+          "lib/net9.0/Blazor-ApexCharts.dll": {
+            "assemblyVersion": "6.0.1.0",
+            "fileVersion": "6.0.1.0"
+          }
+        }
+      },
       "Blazored.LocalStorage/4.5.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Components.Web": "9.0.7"
+          "Microsoft.AspNetCore.Components.Web": "9.0.2"
         },
         "runtime": {
           "lib/net8.0/Blazored.LocalStorage.dll": {
@@ -80,63 +93,63 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Authorization/9.0.7": {
+      "Microsoft.AspNetCore.Authorization/9.0.2": {
         "dependencies": {
-          "Microsoft.AspNetCore.Metadata": "9.0.7",
+          "Microsoft.AspNetCore.Metadata": "9.0.2",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.7",
           "Microsoft.Extensions.Options": "9.0.7"
         },
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.Authorization.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.725.31702"
+            "fileVersion": "9.0.225.6704"
           }
         }
       },
-      "Microsoft.AspNetCore.Components/9.0.7": {
+      "Microsoft.AspNetCore.Components/9.0.2": {
         "dependencies": {
-          "Microsoft.AspNetCore.Authorization": "9.0.7",
-          "Microsoft.AspNetCore.Components.Analyzers": "9.0.7"
+          "Microsoft.AspNetCore.Authorization": "9.0.2",
+          "Microsoft.AspNetCore.Components.Analyzers": "9.0.2"
         },
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.Components.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.725.31702"
+            "fileVersion": "9.0.225.6704"
           }
         }
       },
-      "Microsoft.AspNetCore.Components.Analyzers/9.0.7": {},
-      "Microsoft.AspNetCore.Components.Forms/9.0.7": {
+      "Microsoft.AspNetCore.Components.Analyzers/9.0.2": {},
+      "Microsoft.AspNetCore.Components.Forms/9.0.2": {
         "dependencies": {
-          "Microsoft.AspNetCore.Components": "9.0.7"
+          "Microsoft.AspNetCore.Components": "9.0.2"
         },
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.Components.Forms.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.725.31702"
+            "fileVersion": "9.0.225.6704"
           }
         }
       },
-      "Microsoft.AspNetCore.Components.Web/9.0.7": {
+      "Microsoft.AspNetCore.Components.Web/9.0.2": {
         "dependencies": {
-          "Microsoft.AspNetCore.Components": "9.0.7",
-          "Microsoft.AspNetCore.Components.Forms": "9.0.7",
+          "Microsoft.AspNetCore.Components": "9.0.2",
+          "Microsoft.AspNetCore.Components.Forms": "9.0.2",
           "Microsoft.Extensions.DependencyInjection": "9.0.7",
           "Microsoft.Extensions.Primitives": "9.0.7",
-          "Microsoft.JSInterop": "9.0.7"
+          "Microsoft.JSInterop": "9.0.2"
         },
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.Components.Web.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.725.31702"
+            "fileVersion": "9.0.225.6704"
           }
         }
       },
-      "Microsoft.AspNetCore.Metadata/9.0.7": {
+      "Microsoft.AspNetCore.Metadata/9.0.2": {
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.Metadata.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.725.31702"
+            "fileVersion": "9.0.225.6704"
           }
         }
       },
@@ -606,6 +619,18 @@
           }
         }
       },
+      "Microsoft.Extensions.Configuration/9.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.7",
+          "Microsoft.Extensions.Primitives": "9.0.7"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.225.6610"
+          }
+        }
+      },
       "Microsoft.Extensions.Configuration.Abstractions/9.0.7": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "9.0.7"
@@ -614,6 +639,17 @@
           "lib/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.725.31616"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Binder/9.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.7"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.Binder.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.225.6610"
           }
         }
       },
@@ -641,6 +677,47 @@
           "lib/net9.0/Microsoft.Extensions.DependencyModel.dll": {
             "assemblyVersion": "9.0.0.7",
             "fileVersion": "9.0.725.31616"
+          }
+        }
+      },
+      "Microsoft.Extensions.Diagnostics/9.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "9.0.2",
+          "Microsoft.Extensions.Diagnostics.Abstractions": "9.0.2",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.2"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Diagnostics.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.225.6610"
+          }
+        }
+      },
+      "Microsoft.Extensions.Diagnostics.Abstractions/9.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.7",
+          "Microsoft.Extensions.Options": "9.0.7"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Diagnostics.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.225.6610"
+          }
+        }
+      },
+      "Microsoft.Extensions.Http/9.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.7",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.7",
+          "Microsoft.Extensions.Diagnostics": "9.0.2",
+          "Microsoft.Extensions.Logging": "9.0.7",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.7",
+          "Microsoft.Extensions.Options": "9.0.7"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Http.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.225.6610"
           }
         }
       },
@@ -677,6 +754,21 @@
           "lib/net9.0/Microsoft.Extensions.Options.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.725.31616"
+          }
+        }
+      },
+      "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.7",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.2",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.7",
+          "Microsoft.Extensions.Options": "9.0.7",
+          "Microsoft.Extensions.Primitives": "9.0.7"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.225.6610"
           }
         }
       },
@@ -782,11 +874,11 @@
           }
         }
       },
-      "Microsoft.JSInterop/9.0.7": {
+      "Microsoft.JSInterop/9.0.2": {
         "runtime": {
           "lib/net9.0/Microsoft.JSInterop.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.725.31702"
+            "fileVersion": "9.0.225.6704"
           }
         }
       },
@@ -984,18 +1076,6 @@
             "rid": "win-x86",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Radzen.Blazor/7.1.6": {
-        "dependencies": {
-          "Microsoft.AspNetCore.Components": "9.0.7",
-          "Microsoft.AspNetCore.Components.Web": "9.0.7"
-        },
-        "runtime": {
-          "lib/net9.0/Radzen.Blazor.dll": {
-            "assemblyVersion": "7.1.6.0",
-            "fileVersion": "7.1.6.0"
           }
         }
       },
@@ -1277,6 +1357,13 @@
       "path": "azure.identity/1.11.4",
       "hashPath": "azure.identity.1.11.4.nupkg.sha512"
     },
+    "Blazor-ApexCharts/6.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-yMdzJvVwkCP6jix4IFICSw63Vm3uC4ArbgPGmeHDzGaCuZDEUiYwkiHR3WZ+8Xa51qNRNxrUf/ixUm9iOjlU9A==",
+      "path": "blazor-apexcharts/6.0.1",
+      "hashPath": "blazor-apexcharts.6.0.1.nupkg.sha512"
+    },
     "Blazored.LocalStorage/4.5.0": {
       "type": "package",
       "serviceable": true,
@@ -1291,47 +1378,47 @@
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Authorization/9.0.7": {
+    "Microsoft.AspNetCore.Authorization/9.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-P0Gej6X5cEoK+sS9XpgYSzg0Nz8OOlvfQb12aOAJW/P4b9nAzLQCVoNp1GDyR/P8eMSnoPARiKPaa6q51iR0oA==",
-      "path": "microsoft.aspnetcore.authorization/9.0.7",
-      "hashPath": "microsoft.aspnetcore.authorization.9.0.7.nupkg.sha512"
+      "sha512": "sha512-XpB+xelGR4xxV8UX0Sa2OXr1ZsZgNyF5Xv1Yn3K5GCnzl7wkwczmnER5/E2A+7tBRf424OSPrBdN3gzz5wa14Q==",
+      "path": "microsoft.aspnetcore.authorization/9.0.2",
+      "hashPath": "microsoft.aspnetcore.authorization.9.0.2.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Components/9.0.7": {
+    "Microsoft.AspNetCore.Components/9.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-cZpVsxWWGagoP2U6Kjqm107gVZHTmiM2m7YDNRsScTWoBB1iyEIznvYG9ZK4XkDY4yDUTdnZrXRMMVu8K7dJ8Q==",
-      "path": "microsoft.aspnetcore.components/9.0.7",
-      "hashPath": "microsoft.aspnetcore.components.9.0.7.nupkg.sha512"
+      "sha512": "sha512-mzGLA29vYXczpSTDTCN/VpP2bz76yw4uAIAF9gI177rpsN5h+Vp7GyBpFMvfThYAJUmLcIcZhg3TNb2SjS9oLQ==",
+      "path": "microsoft.aspnetcore.components/9.0.2",
+      "hashPath": "microsoft.aspnetcore.components.9.0.2.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Components.Analyzers/9.0.7": {
+    "Microsoft.AspNetCore.Components.Analyzers/9.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-SlMcfUJHFxjIFAecPY55in8u93AZo5NQrRlPY3hKrSsLEgyjjtZGzWIn+F9RluHw5wRct/QFRCt2sQwEhn8qtA==",
-      "path": "microsoft.aspnetcore.components.analyzers/9.0.7",
-      "hashPath": "microsoft.aspnetcore.components.analyzers.9.0.7.nupkg.sha512"
+      "sha512": "sha512-9yKCoBGAhcwfWNn1U3ZnB2Seqh9vFm7D2OfcS6wNriYbCTWQyRLTvDDj1Xov+H9tgxq7FMpz9+lb46Y/2GeIaQ==",
+      "path": "microsoft.aspnetcore.components.analyzers/9.0.2",
+      "hashPath": "microsoft.aspnetcore.components.analyzers.9.0.2.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Components.Forms/9.0.7": {
+    "Microsoft.AspNetCore.Components.Forms/9.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ecnFWXV/ClmBfkevmalj1e1+T00AkihOyK8yQdKOwKmibraYphyup4BdOLP7v17PNVF4d5njsoHmFtVBvYpsJg==",
-      "path": "microsoft.aspnetcore.components.forms/9.0.7",
-      "hashPath": "microsoft.aspnetcore.components.forms.9.0.7.nupkg.sha512"
+      "sha512": "sha512-clU2grfLt7t7YsBft7laWtxGRtIRf5EQO1SaI05WvMfJNn2gm/IvyutGZLnYLsfgS9kyh+5qw8HR3Ku9dkcVaA==",
+      "path": "microsoft.aspnetcore.components.forms/9.0.2",
+      "hashPath": "microsoft.aspnetcore.components.forms.9.0.2.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Components.Web/9.0.7": {
+    "Microsoft.AspNetCore.Components.Web/9.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-fP+WmahEXWgCTgL/aRo/y75v1nni8E8WfbpkbWOeMBk2UdQORqQbFPIkttu8JPYVACDfVYgEDKIDtVqEY9Akkg==",
-      "path": "microsoft.aspnetcore.components.web/9.0.7",
-      "hashPath": "microsoft.aspnetcore.components.web.9.0.7.nupkg.sha512"
+      "sha512": "sha512-IsY38Fdzm4B7fy1FXzjITDFYxsR4bc/qQgyPJzMOtEcde31NeQTak0apIQKfaIXDU2jNjgt07ztWfqcCpWGHEQ==",
+      "path": "microsoft.aspnetcore.components.web/9.0.2",
+      "hashPath": "microsoft.aspnetcore.components.web.9.0.2.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.Metadata/9.0.7": {
+    "Microsoft.AspNetCore.Metadata/9.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-bM2x5yps2P6eXqFkR5ztKX7QRGGqJ4Vy5PxVdR7ADjYPNmMhrD57r8d9H++hpljk9sdjKI3Sppd7NZyA721nEA==",
-      "path": "microsoft.aspnetcore.metadata/9.0.7",
-      "hashPath": "microsoft.aspnetcore.metadata.9.0.7.nupkg.sha512"
+      "sha512": "sha512-sYLasa9sXXkVJ3BLsMi8Y7B0QnyedIJHQ3Jqh45ibABiPwJ4J13XioAa6oyP7VekmBIy7nq/BMAz1lX63P2fsg==",
+      "path": "microsoft.aspnetcore.metadata/9.0.2",
+      "hashPath": "microsoft.aspnetcore.metadata.9.0.2.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/7.0.0": {
       "type": "package",
@@ -1480,12 +1567,26 @@
       "path": "microsoft.extensions.caching.memory/9.0.7",
       "hashPath": "microsoft.extensions.caching.memory.9.0.7.nupkg.sha512"
     },
+    "Microsoft.Extensions.Configuration/9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-EBZW+u96tApIvNtjymXEIS44tH0I/jNwABHo4c33AchWOiDWCq2rL3klpnIo+xGrxoVGJzPDISV6hZ+a9C9SzQ==",
+      "path": "microsoft.extensions.configuration/9.0.2",
+      "hashPath": "microsoft.extensions.configuration.9.0.2.nupkg.sha512"
+    },
     "Microsoft.Extensions.Configuration.Abstractions/9.0.7": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-lut/kiVvNsQ120VERMUYSFhpXPpKjjql+giy03LesASPBBcC0o6+aoFdzJH9GaYpFTQ3fGVhVjKjvJDoAW5/IQ==",
       "path": "microsoft.extensions.configuration.abstractions/9.0.7",
       "hashPath": "microsoft.extensions.configuration.abstractions.9.0.7.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Binder/9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-krJ04xR0aPXrOf5dkNASg6aJjsdzexvsMRL6UNOUjiTzqBvRr95sJ1owoKEm89bSONQCfZNhHrAFV9ahDqIPIw==",
+      "path": "microsoft.extensions.configuration.binder/9.0.2",
+      "hashPath": "microsoft.extensions.configuration.binder.9.0.2.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection/9.0.7": {
       "type": "package",
@@ -1508,6 +1609,27 @@
       "path": "microsoft.extensions.dependencymodel/9.0.7",
       "hashPath": "microsoft.extensions.dependencymodel.9.0.7.nupkg.sha512"
     },
+    "Microsoft.Extensions.Diagnostics/9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kwFWk6DPaj1Roc0CExRv+TTwjsiERZA730jQIPlwCcS5tMaCAQtaGfwAK0z8CMFpVTiT+MgKXpd/P50qVCuIgg==",
+      "path": "microsoft.extensions.diagnostics/9.0.2",
+      "hashPath": "microsoft.extensions.diagnostics.9.0.2.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Diagnostics.Abstractions/9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kFwIZEC/37cwKuEm/nXvjF7A/Myz9O7c7P9Csgz6AOiiDE62zdOG5Bu7VkROu1oMYaX0wgijPJ5LqVt6+JKjVg==",
+      "path": "microsoft.extensions.diagnostics.abstractions/9.0.2",
+      "hashPath": "microsoft.extensions.diagnostics.abstractions.9.0.2.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Http/9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-34+kcwxPZr3Owk9eZx268+gqGNB8G/8Y96gZHomxam0IOH08FhPBjPrLWDtKdVn4+sVUUJnJMpECSTJi4XXCcg==",
+      "path": "microsoft.extensions.http/9.0.2",
+      "hashPath": "microsoft.extensions.http.9.0.2.nupkg.sha512"
+    },
     "Microsoft.Extensions.Logging/9.0.7": {
       "type": "package",
       "serviceable": true,
@@ -1528,6 +1650,13 @@
       "sha512": "sha512-trJnF6cRWgR5uMmHpGoHmM1wOVFdIYlELlkO9zX+RfieK0321Y55zrcs4AaEymKup7dxgEN/uJU25CAcMNQRXw==",
       "path": "microsoft.extensions.options/9.0.7",
       "hashPath": "microsoft.extensions.options.9.0.7.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Options.ConfigurationExtensions/9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OPm1NXdMg4Kb4Kz+YHdbBQfekh7MqQZ7liZ5dYUd+IbJakinv9Fl7Ck6Strbgs0a6E76UGbP/jHR532K/7/feQ==",
+      "path": "microsoft.extensions.options.configurationextensions/9.0.2",
+      "hashPath": "microsoft.extensions.options.configurationextensions.9.0.2.nupkg.sha512"
     },
     "Microsoft.Extensions.Primitives/9.0.7": {
       "type": "package",
@@ -1592,12 +1721,12 @@
       "path": "microsoft.identitymodel.tokens/6.35.0",
       "hashPath": "microsoft.identitymodel.tokens.6.35.0.nupkg.sha512"
     },
-    "Microsoft.JSInterop/9.0.7": {
+    "Microsoft.JSInterop/9.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+FFcgE9nFf/M/8sSJPzKnGFkALO5Q3mCdljpsxe/ZFRt6bqMcImv8d74HgMamOauhmVlC7MU9GmnbblF9CpNlQ==",
-      "path": "microsoft.jsinterop/9.0.7",
-      "hashPath": "microsoft.jsinterop.9.0.7.nupkg.sha512"
+      "sha512": "sha512-s3gOF+SDeKacf2s1WbN/cRhtxtcPAK6iolv9xA5uIup1NMCgW0+UzAvBZUhBCCPUDQd1N8VUPhyP7+7p/iaDXQ==",
+      "path": "microsoft.jsinterop/9.0.2",
+      "hashPath": "microsoft.jsinterop.9.0.2.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
@@ -1640,13 +1769,6 @@
       "sha512": "sha512-yRjdm7p300eEuy4Mi9YdMuecl2cvTU/CV+IHHDzw22Uf43/0C2zeG4c+MthZqkpQNJPg0Agha1iBSmLBxX1vHA==",
       "path": "questpdf/2025.7.0",
       "hashPath": "questpdf.2025.7.0.nupkg.sha512"
-    },
-    "Radzen.Blazor/7.1.6": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-M9AtbaTU1jW7m9IvMPGOsl7gTibgfSvdvowc4MAgEVq8HUmVIT090Dx1Dk2LjKC4llKcVgsKB77kI5gpOcdpuw==",
-      "path": "radzen.blazor/7.1.6",
-      "hashPath": "radzen.blazor.7.1.6.nupkg.sha512"
     },
     "System.ClientModel/1.0.0": {
       "type": "package",

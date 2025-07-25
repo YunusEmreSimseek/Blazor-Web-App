@@ -8,9 +8,9 @@
 @inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
 @inject UserSessionManager UserSessionManager
 
-@if(isLoading)
+@if (isLoading)
 {
-<div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
         <div class="spinner-border" role="status">
             <span class="visually-hidden">@L["loading"]...</span>
         </div>
@@ -18,123 +18,130 @@
 }
 else
 {
-<table class="table">
-    <thead>
-        <tr>
-            <th @onclick="() => SortBy(SortColumn.Index)">
-                @L["index"]
-                @(SelectedSortColumn == SortColumn.Index
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.Id)">
-                @L["id"]
-                @(SelectedSortColumn == SortColumn.Id
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.FirstName)">
-                @L["name"]
-                @(SelectedSortColumn == SortColumn.FirstName
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.LastName)">
-                @L["surname"]
-                @(SelectedSortColumn == SortColumn.LastName
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.Company)">
-                @L["company"]
-                @(SelectedSortColumn == SortColumn.Company
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.City)">
-                @L["city"]
-                @(SelectedSortColumn == SortColumn.City
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.Country)">
-                @L["country"]
-                @(SelectedSortColumn == SortColumn.Country
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.Phone1)">
-                @L["phone"]1
-                @(SelectedSortColumn == SortColumn.Phone1
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.Phone2)">
-                @L["phone"]2
-                @(SelectedSortColumn == SortColumn.Phone2
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.Email)">
-                @L["email"]
-                @(SelectedSortColumn == SortColumn.Email
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.SubDate)">
-                @L["subDate"]
-                @(SelectedSortColumn == SortColumn.SubDate
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            <th @onclick="() => SortBy(SortColumn.Website)">
-                @L["website"]
-                @(SelectedSortColumn == SortColumn.Website
-                                ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
-                                : "")
-            </th>
-            @if (UserSessionManager.IsAuthenticated && UserSessionManager.Role != Role.User && UserSessionManager.Role != Role.Manager){
-                <th>@L["actions"]</th>
-            }
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var customer in Customers)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@customer.Index</td>
-                <td>@customer.Customer_Id</td>
-                <td>@customer.First_Name</td>
-                <td>@customer.Last_Name</td>
-                <td>@customer.Company</td>
-                <td>@customer.City</td>
-                <td>@customer.Country</td>
-                <td>@customer.Phone_1</td>
-                <td>@customer.Phone_2</td>
-                <td>@customer.Email</td>
-                <td>@customer.Subscription_Date</td>
-                <td>@customer.Website</td>
-                <td>
-                    @if (UserSessionManager.IsAuthenticated && (UserSessionManager.Role == Role.Director || UserSessionManager.Role == Role.Admin)){
-                        <button class="btn btn-sm btn-primary me-1" @onclick="() => OnEditRequested.InvokeAsync(customer)">@L["edit"]</button>
-                    }
-                    @if (UserSessionManager.IsAuthenticated && UserSessionManager.Role == Role.Admin){
-                        <button class="btn btn-sm btn-danger" @onclick="() => ConfirmDelete.InvokeAsync(customer.Customer_Id)">@L["delete"]</button> 
-                    }
-                    
-                </td>
+                <th @onclick="() => SortBy(SortColumn.Index)">
+                    @L["index"]
+                    @(SelectedSortColumn == SortColumn.Index
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.Id)">
+                    @L["id"]
+                    @(SelectedSortColumn == SortColumn.Id
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.FirstName)">
+                    @L["name"]
+                    @(SelectedSortColumn == SortColumn.FirstName
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.LastName)">
+                    @L["surname"]
+                    @(SelectedSortColumn == SortColumn.LastName
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.Company)">
+                    @L["company"]
+                    @(SelectedSortColumn == SortColumn.Company
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.City)">
+                    @L["city"]
+                    @(SelectedSortColumn == SortColumn.City
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.Country)">
+                    @L["country"]
+                    @(SelectedSortColumn == SortColumn.Country
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.Phone1)">
+                    @L["phone"]1
+                    @(SelectedSortColumn == SortColumn.Phone1
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.Phone2)">
+                    @L["phone"]2
+                    @(SelectedSortColumn == SortColumn.Phone2
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.Email)">
+                    @L["email"]
+                    @(SelectedSortColumn == SortColumn.Email
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.SubDate)">
+                    @L["subDate"]
+                    @(SelectedSortColumn == SortColumn.SubDate
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                <th @onclick="() => SortBy(SortColumn.Website)">
+                    @L["website"]
+                    @(SelectedSortColumn == SortColumn.Website
+                                    ? (SelectedSortDirection == TableSortDirection.Ascending ? " ↑" : " ↓")
+                                    : "")
+                </th>
+                @if (UserSessionManager.IsAuthenticated && UserSessionManager.Role != Role.User && UserSessionManager.Role
+                            != Role.Manager)
+                {
+                    <th>@L["actions"]</th>
+                }
+
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var customer in Customers)
+            {
+                <tr>
+                    <td>@customer.Index</td>
+                    <td>@customer.Customer_Id</td>
+                    <td>@customer.First_Name</td>
+                    <td>@customer.Last_Name</td>
+                    <td>@customer.Company</td>
+                    <td>@customer.City</td>
+                    <td>@customer.Country</td>
+                    <td>@customer.Phone_1</td>
+                    <td>@customer.Phone_2</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.Subscription_Date</td>
+                    <td>@customer.Website</td>
+                    <td>
+                        @if (UserSessionManager.IsAuthenticated && (UserSessionManager.Role == Role.Director ||
+                                        UserSessionManager.Role == Role.Admin))
+                        {
+                            <button class="btn btn-sm btn-primary me-1"
+                                @onclick="() => OnEditRequested.InvokeAsync(customer)">@L["edit"]</button>
+                        }
+                        @if (UserSessionManager.IsAuthenticated && UserSessionManager.Role == Role.Admin)
+                        {
+                            <button class="btn btn-sm btn-danger"
+                                @onclick="() => ConfirmDelete.InvokeAsync(customer.Customer_Id)">@L["delete"]</button>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 
 
 @code {
-    [Parameter] public int CurrentPage { get; set;}
-    [Parameter] public int PageSize { get; set;}
+    [Parameter] public int CurrentPage { get; set; }
+    [Parameter] public int PageSize { get; set; }
     [Parameter] public EventCallback<int> OnTotalCountChanged { get; set; }
     [Parameter] public EventCallback<Customer> OnEditRequested { get; set; }
     [Parameter] public EventCallback<string> ConfirmDelete { get; set; }
@@ -147,29 +154,30 @@ else
     private bool isLoading = false;
     private int totalCount = 0;
 
-    private async Task DeleteCustomer(string customerId){
+    private async Task DeleteCustomer(string customerId)
+    {
         var customer = await _context.Customers.FindAsync(customerId);
         if (customer != null)
         {
             var orders = await _context.Orders.Where(o => o.CustomerId == customerId).ToListAsync();
             if (orders.Any())
             {
-               @* await ConfirmDelete.InvokeAsync(customerId, true); *@
+                @* await ConfirmDelete.InvokeAsync(customerId, true); *@
             }
             else
             {
-              @* await  ConfirmDelete.InvokeAsync(customerId, false); *@
+                @* await  ConfirmDelete.InvokeAsync(customerId, false); *@
             }
         }
     }
 
-     private async Task SortBy(SortColumn column)
+    private async Task SortBy(SortColumn column)
     {
         if (CurrentSortColumn == column)
         {
             SelectedSortDirection = SelectedSortDirection == TableSortDirection.Ascending
-                ? TableSortDirection.Descending
-                : TableSortDirection.Ascending;
+            ? TableSortDirection.Descending
+            : TableSortDirection.Ascending;
         }
         else
         {
@@ -184,11 +192,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await  LoadCustomersAsync();
+        await LoadCustomersAsync();
 
     }
 
-    public async Task OnSearch(string searchTerm){
+    public async Task OnSearch(string searchTerm)
+    {
         CurrentPage = 1;
         SearchTerm = searchTerm;
         await LoadCustomersAsync();
@@ -196,14 +205,14 @@ else
 
     public async Task LoadCustomersAsync()
     {
-         if (isLoading) return;
+        if (isLoading) return;
 
         isLoading = true;
         StateHasChanged();
 
         IQueryable<Customer> query = _context.Customers;
 
-         if (!string.IsNullOrWhiteSpace(SearchTerm) && SearchTerm.Length >= 2)
+        if (!string.IsNullOrWhiteSpace(SearchTerm) && SearchTerm.Length >= 2)
         {
             query = query.Where(c =>
             (c.First_Name != null && c.First_Name.Contains(SearchTerm)) ||
@@ -215,14 +224,14 @@ else
             (c.Phone_2 != null && c.Phone_2.Contains(SearchTerm)) ||
             (c.Email != null && c.Email.Contains(SearchTerm)) ||
             (c.Website != null && c.Website.Contains(SearchTerm)));
-        } 
+        }
 
         totalCount = await query.CountAsync();
-       await OnTotalCountChanged.InvokeAsync(totalCount);
+        await OnTotalCountChanged.InvokeAsync(totalCount);
 
 
 
-          @* if (SelectedSortDirection == SortDirection.Ascending)
+        @* if (SelectedSortDirection == SortDirection.Ascending)
         {
             switch (CurrentSortColumn)
             {
@@ -271,13 +280,13 @@ else
 
     }
 
-     public  enum TableSortDirection
+    public enum TableSortDirection
     {
         Ascending,
         Descending
     }
 
-   public enum SortColumn
+    public enum SortColumn
     {
         Index,
         Id,

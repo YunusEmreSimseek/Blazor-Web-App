@@ -1,4 +1,5 @@
-﻿using BlazorApp1.Components;
+﻿using ApexCharts;
+using BlazorApp1.Components;
 using BlazorApp1.Data;
 using BlazorApp1.Services;
 using Blazored.LocalStorage;
@@ -7,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.JSInterop;
 using QuestPDF.Infrastructure;
-using Radzen;
 using System.Globalization;
 using AppDbContext = BlazorApp1.Data.AppDbContext;
 var builder = WebApplication.CreateBuilder(args);
@@ -38,13 +38,8 @@ builder.Services.AddHttpClient<IExchangeService, ExchangeService>(client =>
 {
     client.BaseAddress = new Uri("https://www.nbrm.mk/KLServiceNOV/");
 });
-builder.Services.AddScoped<DialogService>();
-builder.Services.AddScoped<NotificationService>();
-builder.Services.AddScoped<TooltipService>();
-builder.Services.AddScoped<ContextMenuService>();
-
 QuestPDF.Settings.License = LicenseType.Community;
-
+builder.Services.AddApexCharts();
 
 
 
