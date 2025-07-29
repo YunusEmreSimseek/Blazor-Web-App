@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,79 +26,79 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -119,197 +119,314 @@
   </resheader>
   <data name="actions" xml:space="preserve">
     <value>Actions</value>
+    <comment/>
   </data>
   <data name="add" xml:space="preserve">
     <value>Add</value>
+    <comment/>
   </data>
   <data name="addNewCustomer" xml:space="preserve">
     <value>Add New Customer</value>
+    <comment/>
   </data>
   <data name="addNewUser" xml:space="preserve">
     <value>Add New User</value>
+    <comment/>
   </data>
   <data name="adminPanel" xml:space="preserve">
     <value>Admin Panel</value>
+    <comment/>
   </data>
   <data name="cancel" xml:space="preserve">
     <value>Cancel</value>
+    <comment/>
   </data>
   <data name="captcha" xml:space="preserve">
     <value>Captcha</value>
+    <comment/>
   </data>
   <data name="captchaFailed" xml:space="preserve">
     <value>Captcha is failed.</value>
+    <comment/>
   </data>
   <data name="changePassword" xml:space="preserve">
     <value>Change Password</value>
+    <comment/>
   </data>
   <data name="city" xml:space="preserve">
     <value>City</value>
+    <comment/>
   </data>
   <data name="clickToDownload" xml:space="preserve">
     <value>Click to Download</value>
+    <comment/>
   </data>
   <data name="company" xml:space="preserve">
     <value>Company</value>
+    <comment/>
   </data>
   <data name="confirmNewPasswordRequired" xml:space="preserve">
     <value>Confirm new password is required.</value>
+    <comment/>
   </data>
   <data name="confirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
+    <comment/>
   </data>
   <data name="confirmPasswordRequired" xml:space="preserve">
     <value>Confirm Password is required</value>
+    <comment/>
   </data>
   <data name="country" xml:space="preserve">
     <value>Country</value>
+    <comment/>
   </data>
   <data name="createdAt" xml:space="preserve">
     <value>Created At</value>
+    <comment/>
   </data>
   <data name="currentPassword" xml:space="preserve">
     <value>Current Password</value>
+    <comment/>
   </data>
   <data name="currentPasswordLength" xml:space="preserve">
     <value>Current password must be at least 6 characters.</value>
+    <comment/>
   </data>
   <data name="currentPasswordRequired" xml:space="preserve">
     <value>Current password is required.</value>
+    <comment/>
   </data>
   <data name="currentPasswordWrong" xml:space="preserve">
     <value>Current password is wrong.</value>
+    <comment/>
   </data>
   <data name="customerCount" xml:space="preserve">
     <value>Current Customer Count</value>
+    <comment/>
   </data>
   <data name="customerList" xml:space="preserve">
     <value>Customer List</value>
+    <comment/>
   </data>
   <data name="delete" xml:space="preserve">
     <value>Delete</value>
+    <comment/>
   </data>
   <data name="download" xml:space="preserve">
     <value>Download</value>
+    <comment/>
   </data>
   <data name="edit" xml:space="preserve">
     <value>Edit</value>
+    <comment/>
   </data>
   <data name="editCustomer" xml:space="preserve">
     <value>Edit Customer</value>
+    <comment/>
   </data>
   <data name="editUser" xml:space="preserve">
     <value>Edit User</value>
+    <comment/>
   </data>
   <data name="email" xml:space="preserve">
     <value>Email</value>
+    <comment/>
   </data>
   <data name="firstName" xml:space="preserve">
     <value>First Name</value>
+    <comment/>
   </data>
   <data name="hello" xml:space="preserve">
     <value>Hello</value>
+    <comment/>
   </data>
   <data name="id" xml:space="preserve">
     <value>Id</value>
+    <comment/>
   </data>
   <data name="index" xml:space="preserve">
     <value>Index</value>
+    <comment/>
   </data>
   <data name="lastName" xml:space="preserve">
     <value>Last Name</value>
+    <comment/>
   </data>
   <data name="loading" xml:space="preserve">
     <value>Loading</value>
+    <comment/>
   </data>
   <data name="login" xml:space="preserve">
     <value>Login</value>
+    <comment/>
   </data>
   <data name="name" xml:space="preserve">
     <value>Name</value>
+    <comment/>
   </data>
   <data name="newPassword" xml:space="preserve">
     <value>New Password</value>
+    <comment/>
   </data>
   <data name="newPasswordAgain" xml:space="preserve">
     <value>New Password Again</value>
+    <comment/>
   </data>
   <data name="newPasswordLength" xml:space="preserve">
     <value>New password must be at least 6 characters.</value>
+    <comment/>
   </data>
   <data name="newPasswordRequired" xml:space="preserve">
     <value>New password is required.</value>
+    <comment/>
   </data>
   <data name="newPasswordsDontMatch" xml:space="preserve">
     <value>New passwords dont match.</value>
+    <comment/>
   </data>
   <data name="next" xml:space="preserve">
     <value>Next</value>
+    <comment/>
   </data>
   <data name="page" xml:space="preserve">
     <value>Page</value>
+    <comment/>
   </data>
   <data name="pageSize" xml:space="preserve">
     <value>Page Size</value>
+    <comment/>
   </data>
   <data name="password" xml:space="preserve">
     <value>Password</value>
+    <comment/>
   </data>
   <data name="passwordChangeSuccess" xml:space="preserve">
     <value>Password succesfully changed.</value>
+    <comment/>
   </data>
   <data name="passwordMinLength" xml:space="preserve">
     <value>Password must be at least 6 characters</value>
+    <comment/>
   </data>
   <data name="passwordRequired" xml:space="preserve">
     <value>Password is required</value>
+    <comment/>
   </data>
   <data name="passwordsDontMatch" xml:space="preserve">
     <value>Passwords do not match</value>
+    <comment/>
   </data>
   <data name="passwordsMustBeDifferent" xml:space="preserve">
     <value>New passwords must be different of the current password.</value>
+    <comment/>
   </data>
   <data name="phone" xml:space="preserve">
     <value>Phone</value>
+    <comment/>
   </data>
   <data name="previous" xml:space="preserve">
     <value>Previous</value>
+    <comment/>
   </data>
   <data name="register" xml:space="preserve">
     <value>Register</value>
+    <comment/>
   </data>
   <data name="role" xml:space="preserve">
     <value>Role</value>
+    <comment/>
   </data>
   <data name="search" xml:space="preserve">
     <value>Search</value>
+    <comment/>
   </data>
   <data name="signOut" xml:space="preserve">
     <value>Sign Out</value>
+    <comment/>
   </data>
   <data name="subDate" xml:space="preserve">
     <value>Sub. Date</value>
+    <comment/>
   </data>
   <data name="subtitle" xml:space="preserve">
     <value>This component demonstrates showing data with filters and paging.</value>
+    <comment/>
   </data>
   <data name="surname" xml:space="preserve">
     <value>Surname</value>
+    <comment/>
   </data>
   <data name="update" xml:space="preserve">
     <value>Update</value>
+    <comment/>
   </data>
   <data name="username" xml:space="preserve">
     <value>Username</value>
+    <comment/>
   </data>
   <data name="usernameRequired" xml:space="preserve">
     <value>Username is required</value>
+    <comment/>
   </data>
   <data name="website" xml:space="preserve">
     <value>Website</value>
+    <comment/>
   </data>
   <data name="welcome" xml:space="preserve">
     <value>Welcome</value>
+    <comment/>
+  </data>
+  <data name="exchanges" xml:space="preserve">
+    <value>Exchanges</value>
+    <comment/>
+  </data>
+  <data name="startDate" xml:space="preserve">
+    <value>Start Date</value>
+    <comment/>
+  </data>
+  <data name="endDate" xml:space="preserve">
+    <value>End Date</value>
+    <comment/>
+  </data>
+  <data name="getExchangeRates" xml:space="preserve">
+    <value>Get Exchange Rates</value>
+    <comment/>
+  </data>
+  <data name="exchangesSubtitle" xml:space="preserve">
+    <value>Please select dates you want to see exchange rates</value>
+    <comment/>
+  </data>
+  <data name="exchangeRates" xml:space="preserve">
+    <value>Exchange Rates</value>
+    <comment/>
+  </data>
+  <data name="exchangesNoDatesError" xml:space="preserve">
+    <value>Start date and end date must be selected.</value>
+    <comment/>
+  </data>
+  <data name="exchangesNoRatesError" xml:space="preserve">
+    <value>No exchange rates found for the selected dates.</value>
+    <comment/>
+  </data>
+  <data name="average" xml:space="preserve">
+    <value>Average</value>
+    <comment/>
+  </data>
+  <data name="exchangesPruchase" xml:space="preserve">
+    <value>Purchase</value>
+    <comment/>
+  </data>
+  <data name="exchangesSale" xml:space="preserve">
+    <value>Sale</value>
+    <comment/>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>Date</value>
+    <comment/>
+  </data>
+  <data name="currency" xml:space="preserve">
+    <value>Currency</value>
+    <comment/>
   </data>
 </root>

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,79 +26,79 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -119,197 +119,314 @@
   </resheader>
   <data name="actions" xml:space="preserve">
     <value>Aksyionlar</value>
+    <comment/>
   </data>
   <data name="add" xml:space="preserve">
     <value>Ekle</value>
+    <comment/>
   </data>
   <data name="addNewCustomer" xml:space="preserve">
     <value>Yeni Musteri Ekle</value>
+    <comment/>
   </data>
   <data name="addNewUser" xml:space="preserve">
     <value>Yeni Kullanici Ekle</value>
+    <comment/>
   </data>
   <data name="adminPanel" xml:space="preserve">
     <value>Admin Paneli</value>
+    <comment/>
   </data>
   <data name="cancel" xml:space="preserve">
     <value>Iptal</value>
+    <comment/>
   </data>
   <data name="captcha" xml:space="preserve">
     <value>Captcha</value>
+    <comment/>
   </data>
   <data name="captchaFailed" xml:space="preserve">
     <value>Captcha hatali.</value>
+    <comment/>
   </data>
   <data name="changePassword" xml:space="preserve">
     <value>Sifreyi Degistir</value>
+    <comment/>
   </data>
   <data name="city" xml:space="preserve">
     <value>Sehir</value>
+    <comment/>
   </data>
   <data name="clickToDownload" xml:space="preserve">
     <value>Indirmek Icin Tikla</value>
+    <comment/>
   </data>
   <data name="company" xml:space="preserve">
     <value>Sirket</value>
+    <comment/>
   </data>
   <data name="confirmNewPasswordRequired" xml:space="preserve">
     <value>Yeni sifre tekrari bos gecilemez.</value>
+    <comment/>
   </data>
   <data name="confirmPassword" xml:space="preserve">
     <value>Tekrar Sifre</value>
+    <comment/>
   </data>
   <data name="confirmPasswordRequired" xml:space="preserve">
     <value>Sifre Tekrari bos gecilemez</value>
+    <comment/>
   </data>
   <data name="country" xml:space="preserve">
     <value>Ulke</value>
+    <comment/>
   </data>
   <data name="createdAt" xml:space="preserve">
     <value>Olusturulma Tarihi</value>
+    <comment/>
   </data>
   <data name="currentPassword" xml:space="preserve">
     <value>Suanki Sifre</value>
+    <comment/>
   </data>
   <data name="currentPasswordLength" xml:space="preserve">
     <value>Simdiki sifre en az 6 karakter olmalidir.</value>
+    <comment/>
   </data>
   <data name="currentPasswordRequired" xml:space="preserve">
     <value>Simdiki sifre bos gecilemez/</value>
+    <comment/>
   </data>
   <data name="currentPasswordWrong" xml:space="preserve">
     <value>Simdiki sifre yanlis girildi.</value>
+    <comment/>
   </data>
   <data name="customerCount" xml:space="preserve">
     <value>Aktif Musteri Sayisi</value>
+    <comment/>
   </data>
   <data name="customerList" xml:space="preserve">
     <value>Musteri Listesi</value>
+    <comment/>
   </data>
   <data name="delete" xml:space="preserve">
     <value>Sil</value>
+    <comment/>
   </data>
   <data name="download" xml:space="preserve">
     <value>Indir</value>
+    <comment/>
   </data>
   <data name="edit" xml:space="preserve">
     <value>Duzenle</value>
+    <comment/>
   </data>
   <data name="editCustomer" xml:space="preserve">
     <value>Musteri Duzenle</value>
+    <comment/>
   </data>
   <data name="editUser" xml:space="preserve">
     <value>Kullaniciyi Duzenle</value>
+    <comment/>
   </data>
   <data name="email" xml:space="preserve">
     <value>Email</value>
+    <comment/>
   </data>
   <data name="firstName" xml:space="preserve">
     <value>Isim</value>
+    <comment/>
   </data>
   <data name="hello" xml:space="preserve">
     <value>Merhaba</value>
+    <comment/>
   </data>
   <data name="id" xml:space="preserve">
     <value>Id</value>
+    <comment/>
   </data>
   <data name="index" xml:space="preserve">
     <value>Index</value>
+    <comment/>
   </data>
   <data name="lastName" xml:space="preserve">
     <value>Soyisim</value>
+    <comment/>
   </data>
   <data name="loading" xml:space="preserve">
     <value>Yukleniyor</value>
+    <comment/>
   </data>
   <data name="login" xml:space="preserve">
     <value>Giris Yap</value>
+    <comment/>
   </data>
   <data name="name" xml:space="preserve">
     <value>Isim</value>
+    <comment/>
   </data>
   <data name="newPassword" xml:space="preserve">
     <value>Yeni Sifre</value>
+    <comment/>
   </data>
   <data name="newPasswordAgain" xml:space="preserve">
     <value>Yeni Sifre Tekrar</value>
+    <comment/>
   </data>
   <data name="newPasswordLength" xml:space="preserve">
     <value>Yeni sifre en az 6 karakter olmalidir.</value>
+    <comment/>
   </data>
   <data name="newPasswordRequired" xml:space="preserve">
     <value>Yeni sifre bos gecilemez.</value>
+    <comment/>
   </data>
   <data name="newPasswordsDontMatch" xml:space="preserve">
     <value>Yeni sifreler biribiryle uyusmuyor.</value>
+    <comment/>
   </data>
   <data name="next" xml:space="preserve">
     <value>Sonraki</value>
+    <comment/>
   </data>
   <data name="page" xml:space="preserve">
     <value>Sayfa</value>
+    <comment/>
   </data>
   <data name="pageSize" xml:space="preserve">
     <value>Sayfa Boyutu</value>
+    <comment/>
   </data>
   <data name="password" xml:space="preserve">
     <value>Sifre</value>
+    <comment/>
   </data>
   <data name="passwordChangeSuccess" xml:space="preserve">
     <value>Sifre basariyla degistirildi.</value>
+    <comment/>
   </data>
   <data name="passwordMinLength" xml:space="preserve">
     <value>Sifre en az 6 karakter olmali</value>
+    <comment/>
   </data>
   <data name="passwordRequired" xml:space="preserve">
     <value>Sifre bos gecilemez</value>
+    <comment/>
   </data>
   <data name="passwordsDontMatch" xml:space="preserve">
     <value>Sifreler eslesmiyor</value>
+    <comment/>
   </data>
   <data name="passwordsMustBeDifferent" xml:space="preserve">
     <value>Yeni sifre eskisiyle ayni olamaz.</value>
+    <comment/>
   </data>
   <data name="phone" xml:space="preserve">
     <value>Telefon</value>
+    <comment/>
   </data>
   <data name="previous" xml:space="preserve">
     <value>Onceki</value>
+    <comment/>
   </data>
   <data name="register" xml:space="preserve">
     <value>Kayit Ol</value>
+    <comment/>
   </data>
   <data name="role" xml:space="preserve">
     <value>Rol</value>
+    <comment/>
   </data>
   <data name="search" xml:space="preserve">
     <value>Arama</value>
+    <comment/>
   </data>
   <data name="signOut" xml:space="preserve">
     <value>Cikis Yap</value>
+    <comment/>
   </data>
   <data name="subDate" xml:space="preserve">
     <value>Abn. Tarihi</value>
+    <comment/>
   </data>
   <data name="subtitle" xml:space="preserve">
     <value>Bu komponent sayfalama ve filtreleme ile beraber verileri gosteriyor.</value>
+    <comment/>
   </data>
   <data name="surname" xml:space="preserve">
     <value>Soyisim</value>
+    <comment/>
   </data>
   <data name="update" xml:space="preserve">
     <value>Guncelle</value>
+    <comment/>
   </data>
   <data name="username" xml:space="preserve">
     <value>Kullanici Adi</value>
+    <comment/>
   </data>
   <data name="usernameRequired" xml:space="preserve">
     <value>Kullanici adi bos gecilemez</value>
+    <comment/>
   </data>
   <data name="website" xml:space="preserve">
     <value>Website</value>
+    <comment/>
   </data>
   <data name="welcome" xml:space="preserve">
     <value>Hosgeldiniz</value>
+    <comment/>
+  </data>
+  <data name="exchanges" xml:space="preserve">
+    <value>Borsalar</value>
+    <comment/>
+  </data>
+  <data name="startDate" xml:space="preserve">
+    <value>Başlama Tarihi</value>
+    <comment/>
+  </data>
+  <data name="endDate" xml:space="preserve">
+    <value>Bitme Tarihi</value>
+    <comment/>
+  </data>
+  <data name="getExchangeRates" xml:space="preserve">
+    <value>Döviz Oranlarını Getir</value>
+    <comment/>
+  </data>
+  <data name="exchangesSubtitle" xml:space="preserve">
+    <value>Lütfen döviz kurlarını görmek istediğiniz tarihleri seçin</value>
+    <comment/>
+  </data>
+  <data name="exchangeRates" xml:space="preserve">
+    <value>Döviz Oranları</value>
+    <comment/>
+  </data>
+  <data name="exchangesNoDatesError" xml:space="preserve">
+    <value>Başlangıç tarihi ve bitiş tarihi seçilmelidir.</value>
+    <comment/>
+  </data>
+  <data name="exchangesNoRatesError" xml:space="preserve">
+    <value>Seçilen tarihlere ait döviz kuru bulunamadı.</value>
+    <comment/>
+  </data>
+  <data name="average" xml:space="preserve">
+    <value>Ortalama</value>
+    <comment/>
+  </data>
+  <data name="exchangesPurchase" xml:space="preserve">
+    <value>Satın Alım</value>
+    <comment/>
+  </data>
+  <data name="exchangesSale" xml:space="preserve">
+    <value>Satış</value>
+    <comment/>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>Tarih</value>
+    <comment/>
+  </data>
+  <data name="currency" xml:space="preserve">
+    <value>Döviz</value>
+    <comment/>
   </data>
 </root>

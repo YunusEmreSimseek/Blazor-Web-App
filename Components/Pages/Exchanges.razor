@@ -27,7 +27,7 @@ else
     @if (_exchanges.Count == 0)
     {
         <div class="w-25">
-            <p>Please select dates you want to see exchange rates</p>
+            <p>@L["exchangesSubtitle"]</p>
             <input class="form-control" type="date" placeholder="@L["startDate"]" @bind="_startDate" />
             <input class="form-control" type="date" placeholder="@L["endDate"]" @bind="_endDate" />
             <button class="btn btn-primary" type="button" @onclick="HandleRedraw">@L["getExchangeRates"]</button>
@@ -36,7 +36,7 @@ else
     else
     {
 
-        <ApexChart TItem="ChartDataModel" Title="Exchange Rates">
+        <ApexChart TItem="ChartDataModel" Title=@L["exchangeRates"]>
 
             <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 EUR" SeriesType="SeriesType.Line"
                 XValue="e => e.DateLabel" YValue="e=> e.EurRate" />
@@ -51,19 +51,20 @@ else
             <thead>
                 <tr>
                     @* <th> RBr  </th> *@
-                    <th> Datum </th>
+                    <th> @L["date"] </th>
+                    <th> @L["currency"] </th>
                     @* <th> Valuta  </th> *@
-                    <th> Nomin </th>
-                    <th> Oznaka </th>
+                    @* <th> Nomin </th> *@
+                    @* <th> Oznaka </th> *@
                     @* <th> Drzava  </th> *@
-                    <th> Drzava </th>
+                    <th> @L["country"] </th>
                     @* <th> DrzavaAl  </th> *@
                     @* <th> NazivMak  </th> *@
-                    <th> Naziv </th>
+                    <th> @L["name"] </th>
                     @* <th> NazivAl  </th> *@
-                    <th> Sreden </th>
-                    <th> Kupoven </th>
-                    <th> Prodazen </th>
+                    <th> @L["average"] </th>
+                    <th> @L["exchangesPurchase"] </th>
+                    <th> @L["exchangesSale"] </th>
                     @* <th> Datum_f  </th> *@
 
 
@@ -78,7 +79,7 @@ else
                         @* <td>@exchange.RBr</td> *@
                         <td>@exchange.Datum</td>
                         @* <td>@exchange.Valuta</td> *@
-                        <td>@exchange.Nomin</td>
+                        @* <td>@exchange.Nomin</td> *@
                         <td>@exchange.Oznaka</td>
                         @* <td>@exchange.Drzava</td> *@
                         <td>@exchange.DrzavaAng</td>
@@ -113,14 +114,14 @@ else
         {
             if (_startDate == default || _endDate == default)
             {
-                _message = "Start date and end date must be selected.";
+                _message = L["exchangesNoDatesError"];
                 return;
             }
 
             var exchanges = await ExchangeService.GetExchangeRatesAsync(_startDate, _endDate);
             if (exchanges is null || exchanges.Count == 0)
             {
-                _message = "No exchange rates found for the selected dates.";
+                _message = L["exchangesNoRatesError"];
                 return;
             }
 
@@ -140,11 +141,7 @@ else
 
     private async Task HandleRedraw()
     {
-
-
         await GetExchangeRates();
-        @* StateHasChanged(); *@
-
 
         string[] labels = _exchanges
         .Select(e => e.Datum.ToString("dd-MM-yyyy"))
@@ -152,17 +149,17 @@ else
         .ToArray();
 
         List<double> _eurValues = _exchanges
-         .Where(e => e.Oznaka == "EUR") 
+        .Where(e => e.Oznaka == "EUR")
         .Select(e => e.Sreden)
         .ToList();
 
         List<double> _usdValues = _exchanges
-         .Where(e => e.Oznaka == "USD") 
+        .Where(e => e.Oznaka == "USD")
         .Select(e => e.Sreden)
         .ToList();
 
         List<double> _tryValues = _exchanges
-         .Where(e => e.Oznaka == "TRY") 
+        .Where(e => e.Oznaka == "TRY")
         .Select(e => e.Sreden)
         .ToList();
 
@@ -172,13 +169,16 @@ else
             double roundedEur = Math.Round(_eurValues[i], 2);
             double roundedUsd = Math.Round(_usdValues[i], 2);
             double roundedTry = Math.Round(_tryValues[i], 2);
+            var truncatedEur = TruncateToTwoDecimals((decimal)_eurValues[i]);
+            var truncatedUsd = TruncateToTwoDecimals((decimal)_usdValues[i]);
+            var truncatedTry = TruncateToTwoDecimals((decimal)_tryValues[i]);
 
             _chartData.Add(new ChartDataModel
             {
                 DateLabel = labels[i],
-                EurRate = i < _eurValues.Count ? (decimal)roundedEur : 0,
-                UsdRate = i < _usdValues.Count ? (decimal)roundedUsd : 0,
-                TryRate = i < _tryValues.Count ? (decimal)roundedTry : 0
+                EurRate = i < _eurValues.Count ? truncatedEur : 0,
+                UsdRate = i < _usdValues.Count ? truncatedUsd : 0,
+                TryRate = i < _tryValues.Count ? truncatedTry : 0
             });
         }
         StateHasChanged();
@@ -193,7 +193,15 @@ else
         public decimal EurRate { get; set; }
         public decimal TryRate { get; set; }
         public decimal UsdRate { get; set; }
+
     }
+
+    private decimal TruncateToTwoDecimals(decimal value)
+{
+    return Math.Truncate(value * 100) / 100;
+}
+
+
 }
 
 }
