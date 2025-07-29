@@ -429,4 +429,12 @@
     <value>Валута</value>
     <comment/>
   </data>
+  <data name="exchangesCurrencyTitle" xml:space="preserve">
+    <value>Изберете валути што сакате да ги следите</value>
+    <comment/>
+  </data>
+  <data name="exchangesComponentTitle" xml:space="preserve">
+    <value>Изберете компоненти што сакате да ги видите</value>
+    <comment/>
+  </data>
 </root>

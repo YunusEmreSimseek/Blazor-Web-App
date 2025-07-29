@@ -429,4 +429,12 @@
     <value>Döviz</value>
     <comment/>
   </data>
+  <data name="exchangesCurrencyTitle" xml:space="preserve">
+    <value>İzlemek İstediğiniz Para Birimlerini Seçin</value>
+    <comment/>
+  </data>
+  <data name="exchangesComponentTitle" xml:space="preserve">
+    <value>Görmek İstediğiniz Bileşenleri Seçin</value>
+    <comment/>
+  </data>
 </root>

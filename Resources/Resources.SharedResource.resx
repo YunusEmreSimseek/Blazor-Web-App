@@ -429,4 +429,12 @@
     <value>Currency</value>
     <comment/>
   </data>
+  <data name="exchangesCurrencyTitle" xml:space="preserve">
+    <value>Select Currencies You Want to Track</value>
+    <comment/>
+  </data>
+  <data name="exchangesComponentTitle" xml:space="preserve">
+    <value>Select Components You Want to See</value>
+    <comment/>
+  </data>
 </root>

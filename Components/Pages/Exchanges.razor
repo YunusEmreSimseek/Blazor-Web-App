@@ -26,75 +26,99 @@ else
 {
     @if (_exchanges.Count == 0)
     {
+        <h5>@L["exchangesCurrencyTitle"]</h5>
+
+        @foreach (var currency in _allCurrencies)
+        {
+            <div>
+                <input type="checkbox" @onchange="@(() => ToggleCurrency(currency))" checked="@_currencies.Contains(currency)" />
+                <label>@currency.ToString()</label>
+            </div>
+        }
+
+        <div class="mb-3" />
+
+        <h5>@L["exchangesComponentTitle"]</h5>
+
+        @foreach (var mode in _allModes)
+        {
+            <div>
+                <input type="checkbox" @onchange="@(() => _showMode = mode)" checked="@CheckedMode(mode)" />
+                <label>@mode.ToString()</label>
+            </div>
+        }
+        <div class="mb-3" />
+
+        <h5>@L["exchangesSubtitle"]</h5>
         <div class="w-25">
-            <p>@L["exchangesSubtitle"]</p>
             <input class="form-control" type="date" placeholder="@L["startDate"]" @bind="_startDate" />
             <input class="form-control" type="date" placeholder="@L["endDate"]" @bind="_endDate" />
-            <button class="btn btn-primary" type="button" @onclick="HandleRedraw">@L["getExchangeRates"]</button>
         </div>
+
+        <div class="mb-3" />
+        <button class="btn btn-primary" type="button" @onclick="HandleRedraw">@L["getExchangeRates"]</button>
+
+
+
+
+
+
     }
     else
     {
+        @if (_showMode == ShowMode.Graphic || _showMode == ShowMode.All)
+        {
+            <ApexChart TItem="ChartDataModel" Title=@L["exchangeRates"]>
 
-        <ApexChart TItem="ChartDataModel" Title=@L["exchangeRates"]>
-
-            <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 EUR" SeriesType="SeriesType.Line"
-                XValue="e => e.DateLabel" YValue="e=> e.EurRate" />
-            <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 USD" SeriesType="SeriesType.Line"
-                XValue="e => e.DateLabel" YValue="e=> e.UsdRate" />
-            <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 TRY" SeriesType="SeriesType.Line"
-                XValue="e => e.DateLabel" YValue="e=> e.TryRate" />
-
-        </ApexChart>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    @* <th> RBr  </th> *@
-                    <th> @L["date"] </th>
-                    <th> @L["currency"] </th>
-                    @* <th> Valuta  </th> *@
-                    @* <th> Nomin </th> *@
-                    @* <th> Oznaka </th> *@
-                    @* <th> Drzava  </th> *@
-                    <th> @L["country"] </th>
-                    @* <th> DrzavaAl  </th> *@
-                    @* <th> NazivMak  </th> *@
-                    <th> @L["name"] </th>
-                    @* <th> NazivAl  </th> *@
-                    <th> @L["average"] </th>
-                    <th> @L["exchangesPurchase"] </th>
-                    <th> @L["exchangesSale"] </th>
-                    @* <th> Datum_f  </th> *@
-
-
-
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var exchange in _exchanges)
+                @if (_currencies.Contains(Currency.EUR))
                 {
-                    <tr>
-                        @* <td>@exchange.RBr</td> *@
-                        <td>@exchange.Datum</td>
-                        @* <td>@exchange.Valuta</td> *@
-                        @* <td>@exchange.Nomin</td> *@
-                        <td>@exchange.Oznaka</td>
-                        @* <td>@exchange.Drzava</td> *@
-                        <td>@exchange.DrzavaAng</td>
-                        @* <td>@exchange.DrzavaAl</td> *@
-                        @* <td>@exchange.NazivMak</td> *@
-                        <td>@exchange.NazivAng</td>
-                        @* <td>@exchange.NazivAl</td> *@
-                        <td>@exchange.Sreden</td>
-                        <td>@exchange.Kupoven</td>
-                        <td>@exchange.Prodazen</td>
-                        @* <td>@exchange.Datum_f</td> *@
-                    </tr>
+                    <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 EUR" SeriesType="SeriesType.Line"
+                        XValue="e => e.DateLabel" YValue="e=> e.EurRate" />
                 }
-            </tbody>
-        </table>
+                @if (_currencies.Contains(Currency.USD))
+                {
+                    <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 USD" SeriesType="SeriesType.Line"
+                        XValue="e => e.DateLabel" YValue="e=> e.UsdRate" />
+                }
+                @if (_currencies.Contains(Currency.TRY))
+                {
+                    <ApexPointSeries TItem="ChartDataModel" Items="_chartData" Name="1 TRY" SeriesType="SeriesType.Line"
+                        XValue="e => e.DateLabel" YValue="e=> e.TryRate" />
+                }
+
+            </ApexChart>
+        }
+
+        @if (_showMode == ShowMode.All || _showMode == ShowMode.Table)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> @L["date"] </th>
+                        <th> @L["currency"] </th>
+                        <th> @L["country"] </th>
+                        <th> @L["name"] </th>
+                        <th> @L["average"] </th>
+                        <th> @L["exchangesPurchase"] </th>
+                        <th> @L["exchangesSale"] </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var exchange in _exchanges)
+                    {
+                        <tr>
+                            <td>@exchange.Datum</td>
+                            <td>@exchange.Oznaka</td>
+                            <td>@exchange.DrzavaAng</td>
+                            <td>@exchange.NazivAng</td>
+                            <td>@exchange.Sreden</td>
+                            <td>@exchange.Kupoven</td>
+                            <td>@exchange.Prodazen</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     }
 
 
@@ -104,8 +128,20 @@ else
     private DateTime _startDate = DateTime.Now;
     private DateTime _endDate = DateTime.Now;
     private string _message = "";
-
     private List<ChartDataModel> _chartData = new();
+    private ShowMode _showMode = ShowMode.All;
+    private IEnumerable<ShowMode> _allModes => Enum.GetValues(typeof(ShowMode)).Cast<ShowMode>();
+    private bool CheckedMode(ShowMode mode) => _showMode == mode;
+    private List<Currency> _currencies = new() { Currency.EUR };
+    private IEnumerable<Currency> _allCurrencies => Enum.GetValues(typeof(Currency)).Cast<Currency>();
+
+    private void ToggleCurrency(Currency currency)
+    {
+        if (_currencies.Contains(currency))
+            _currencies.Remove(currency);
+        else
+            _currencies.Add(currency);
+    }
 
     private async Task GetExchangeRates()
     {
@@ -197,9 +233,21 @@ else
     }
 
     private decimal TruncateToTwoDecimals(decimal value)
-{
-    return Math.Truncate(value * 100) / 100;
-}
+    {
+        return Math.Truncate(value * 100) / 100;
+    }
+
+    enum Currency
+    {
+        EUR,
+        USD,
+        TRY
+    }
+
+    private enum ShowMode
+    {
+        Graphic, Table, All
+    }
 
 
 }
