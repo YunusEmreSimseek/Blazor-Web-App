@@ -4,6 +4,8 @@
 @using Microsoft.AspNetCore.Localization
 @inject UserSessionManager UserSessionManager
 @inject ILocalStorageService LocalStorageService
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,11 +19,12 @@
     <ImportMap />
     <link rel="icon" type="image/png" href="favicon.png" />
     <HeadOutlet />
-
+    <script src="_content/Telerik.UI.for.Blazor/js/telerik-blazor.js"></script>
+    <link rel="stylesheet" href="_content/Telerik.UI.for.Blazor/css/kendo-theme-default/all.css" />
 </head>
 
 <body>
-    <Routes />
+    <Routes @rendermode="InteractiveServer" />
     <script src="_framework/blazor.web.js"></script>
 </body>
 
@@ -39,7 +42,7 @@
             var storedRole = await LocalStorageService.GetItemAsync<Role?>("role");
             if (!String.IsNullOrEmpty(storedUsername) && storedRole != null)
             {
-                UserSessionManager.SetUser(storedUsername,storedRole);
+                UserSessionManager.SetUser(storedUsername, storedRole);
             }
         }
     }

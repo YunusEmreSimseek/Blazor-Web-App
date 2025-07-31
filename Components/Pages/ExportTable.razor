@@ -3,6 +3,7 @@
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.Extensions.Localization
 @using static BlazorApp1.Components.Pages.CustomerTable
+@using System.IO
 @inject CsvExportService CsvExportService
 @inject PdfExportService PdfExportService
 @inject NavigationManager NavigationManager
@@ -70,7 +71,7 @@
             var pdfBytes = PdfExportService.GenerateCustomerPdf(Customers, L);
             var path = Path.Combine("wwwroot", "exports", $"{fileName}.pdf");
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-            await File.WriteAllBytesAsync(path, pdfBytes);
+            await System.IO.File.WriteAllBytesAsync(path, pdfBytes);
             fileUrl = NavigationManager.BaseUri + $"exports/{fileName}.pdf";
             Console.WriteLine("Fileurl:" + fileUrl + "-----------------------------------");
         }
@@ -79,7 +80,7 @@
             var csvBytes = CsvExportService.GenerateCustomerCsv(Customers, L);
             var path = Path.Combine("wwwroot", "exports", $"{fileName}.csv");
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-            await File.WriteAllBytesAsync(path, csvBytes);
+            await System.IO.File.WriteAllBytesAsync(path, csvBytes);
             fileUrl = NavigationManager.BaseUri + $"exports/{fileName}.csv";
         }
 

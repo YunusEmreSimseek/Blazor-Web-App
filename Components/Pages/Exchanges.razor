@@ -5,6 +5,7 @@
 @using Microsoft.Extensions.Localization
 @using ApexCharts
 @using Microsoft.AspNetCore.Components
+@using Telerik.DataSource
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
 @inject IExchangeService ExchangeService
@@ -26,6 +27,8 @@ else
 {
     @if (_exchanges.Count == 0)
     {
+
+
         <h5>@L["exchangesCurrencyTitle"]</h5>
 
         @foreach (var currency in _allCurrencies)
@@ -59,10 +62,6 @@ else
         <button class="btn btn-primary" type="button" @onclick="HandleRedraw">@L["getExchangeRates"]</button>
 
 
-
-
-
-
     }
     else
     {
@@ -91,7 +90,23 @@ else
 
         @if (_showMode == ShowMode.All || _showMode == ShowMode.Table)
         {
-            <table class="table">
+
+             <TelerikGrid Class="grid" Data=@_exchanges  Pageable="true" Sortable="true"
+             Resizable="true" PageSize="10" Navigable="true" FilterMode="GridFilterMode.FilterMenu"
+             Reorderable="true"
+              >
+                <GridColumns>
+                    <GridColumn Field="@nameof(ExchangeRate.Datum)" DisplayFormat="{0:dd.MM.yyyy}" Title=@L["date"] Width="195px" /> 
+                    <GridColumn Field="@nameof(ExchangeRate.Oznaka)" Title=@L["currency"] Width="195px" />
+                    <GridColumn Field="@nameof(ExchangeRate.DrzavaAng)" Title=@L["country"] Width="195px" />
+                    <GridColumn Field="@nameof(ExchangeRate.NazivAng)" Title=@L["name"] Width="195px" />
+                    <GridColumn Field="@nameof(ExchangeRate.Sreden)" Title=@L["average"] Width="195px" />
+                    <GridColumn Field="@nameof(ExchangeRate.Kupoven)" Title=@L["exchangesPurchase"] Width="195px" />
+                    <GridColumn Field="@nameof(ExchangeRate.Prodazen)" Title=@L["exchangesSale"] Width="195px" />
+                </GridColumns>
+            </TelerikGrid>  
+
+             @* <table class="table">
                 <thead>
                     <tr>
                         <th> @L["date"] </th>
@@ -104,7 +119,7 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var exchange in _exchanges)
+                    @foreach (var exchange in _filteredExchanges.Count > 0 ? _filteredExchanges : _exchanges)
                     {
                         <tr>
                             <td>@exchange.Datum</td>
@@ -113,17 +128,16 @@ else
                             <td>@exchange.NazivAng</td>
                             <td>@exchange.Sreden</td>
                             <td>@exchange.Kupoven</td>
-                            <td>@exchange.Prodazen</td>
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>  *@
         }
     }
 
-
 @code {
     private List<ExchangeRate> _exchanges = new();
+    private List<ExchangeRate> _filteredExchanges = new();
     private bool _isLoading = false;
     private DateTime _startDate = DateTime.Now;
     private DateTime _endDate = DateTime.Now;
@@ -135,6 +149,7 @@ else
     private List<Currency> _currencies = new() { Currency.EUR };
     private IEnumerable<Currency> _allCurrencies => Enum.GetValues(typeof(Currency)).Cast<Currency>();
 
+ 
     private void ToggleCurrency(Currency currency)
     {
         if (_currencies.Contains(currency))
@@ -143,6 +158,21 @@ else
             _currencies.Add(currency);
     }
 
+    private void OnSearch(string searchTerm)
+    {
+        if (string.IsNullOrEmpty(searchTerm))
+        {
+            _filteredExchanges = new();
+            return;
+        }
+
+        _filteredExchanges = _exchanges
+        .Where(e => e.Oznaka.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+        e.DrzavaAng.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+        e.NazivAng.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+        .ToList();
+
+    }
     private async Task GetExchangeRates()
     {
         _isLoading = true;

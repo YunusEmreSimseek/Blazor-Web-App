@@ -40,7 +40,7 @@ builder.Services.AddHttpClient<IExchangeService, ExchangeService>(client =>
 });
 QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddApexCharts();
-
+builder.Services.AddTelerikBlazor();
 
 
 
@@ -84,7 +84,7 @@ localizationOptions.SetDefaultCulture(supportedCultures2[0]);
 localizationOptions.AddSupportedCultures(supportedCultures2);
 localizationOptions.AddSupportedUICultures(supportedCultures2);
 
-app.UseStaticFiles(); 
+app.UseStaticFiles();
 app.UseRouting();
 app.UseRequestLocalization(localizationOptions);
 app.UseAntiforgery();

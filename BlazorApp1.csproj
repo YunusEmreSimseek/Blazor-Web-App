@@ -19,6 +19,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="QuestPDF" Version="2025.7.0" />
+    <PackageReference Include="Telerik.UI.for.Blazor" Version="9.1.0" />
   </ItemGroup>
 
 </Project>

@@ -29,7 +29,7 @@
 
 <p>@L["subtitle"]</p>
 
-@if (isLoading )
+@if (isLoading)
 {
 
     <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
@@ -46,10 +46,11 @@ else
         <input type="text" class="form-control mb-3" placeholder="@L["search"]..." @bind="searchTerm" />
         <button class="btn btn-primary" @onclick="OnSearch">@L["search"]</button>
     </div>
-    
+
 
     <div class="mb-3">
-        <button class="btn btn-secondary me-2" @onclick="PreviousPage" disabled="@IsPreviousDisabled">⟨ @L["previous"]</button>
+        <button class="btn btn-secondary me-2" @onclick="PreviousPage" disabled="@IsPreviousDisabled">⟨
+            @L["previous"]</button>
         <span>@L["page"]e @CurrentPage / @TotalPages</span>
         <button class="btn btn-secondary ms-2" @onclick="NextPage" disabled="@IsNextDisabled">@L["next"] ⟩</button>
     </div>
@@ -63,46 +64,42 @@ else
             <option value="100" selected="@IsSelectedPageSize(100)">100</option>
         </select>
 
-        
+
     </div>
 
-<CustomerTable
-                   OnTotalCountChanged="value => totalCount = value"
-                   OnEditRequested="value => EditCustomer(value) "
-                   ConfirmDelete="value => ConfirmDelete(value)"
-                   CurrentPage="CurrentPage"
-                   PageSize="PageSize"
-                   OnCustomerChanged="value => AssignToCustomers(value)"
-                    @ref="customerTable"
-                   /> 
-                
+    <CustomerTable OnTotalCountChanged="value => totalCount = value" OnEditRequested="value => EditCustomer(value)"
+        ConfirmDelete="value => ConfirmDelete(value)" CurrentPage="CurrentPage" PageSize="PageSize"
+        OnCustomerChanged="value => AssignToCustomers(value)" @ref="customerTable" />
+
 
     <ExportTable @ref="exportTable" />
 
 
-    @if(UserSessionManager.IsAuthenticated && (UserSessionManager.Role == Role.Director || UserSessionManager.Role == Role.Admin )){
+    @if (UserSessionManager.IsAuthenticated && (UserSessionManager.Role == Role.Director || UserSessionManager.Role ==
+    Role.Admin))
+    {
 
         <span class="mb-3">
-                <h3>@(isEditMode? @L["editCustomer"] : @L["addNewCustomer"])</h3>
+            <h3>@(isEditMode? @L["editCustomer"] : @L["addNewCustomer"])</h3>
 
-    <div class="mb-3">
-        <input class="form-control" placeholder=@L["firstName"] @bind="customerModel.First_Name" />
-        <input class="form-control" placeholder=@L["lastName"] @bind="customerModel.Last_Name" />
-        <input class="form-control" placeholder=@L["company"] @bind="customerModel.Company" />
-        <input class="form-control" placeholder=@L["city"] @bind="customerModel.City" />
-        <input class="form-control" placeholder=@L["country"] @bind="customerModel.Country" />
-        <input class="form-control" placeholder="@L["phone"] 1" @bind="customerModel.Phone_1" />
-        <input class="form-control" placeholder="@L["phone"] 2" @bind="customerModel.Phone_2" />
-        <input class="form-control" placeholder=@L["email"] @bind="customerModel.Email" />
-        <input class="form-control" placeholder=@L["website"] @bind="customerModel.Website" />
-        <input class="form-control" type="date" @bind="customerModel.Subscription_Date" />
-    </div>
+            <div class="mb-3">
+                <input class="form-control" placeholder=@L["firstName"] @bind="customerModel.First_Name" />
+                <input class="form-control" placeholder=@L["lastName"] @bind="customerModel.Last_Name" />
+                <input class="form-control" placeholder=@L["company"] @bind="customerModel.Company" />
+                <input class="form-control" placeholder=@L["city"] @bind="customerModel.City" />
+                <input class="form-control" placeholder=@L["country"] @bind="customerModel.Country" />
+                <input class="form-control" placeholder="@L["phone"] 1" @bind="customerModel.Phone_1" />
+                <input class="form-control" placeholder="@L["phone"] 2" @bind="customerModel.Phone_2" />
+                <input class="form-control" placeholder=@L["email"] @bind="customerModel.Email" />
+                <input class="form-control" placeholder=@L["website"] @bind="customerModel.Website" />
+                <input class="form-control" type="date" @bind="customerModel.Subscription_Date" />
+            </div>
 
-    <button class="btn btn-success" @onclick="SaveCustomer">@(isEditMode? @L["update"] : @L["add"])</button>
-    <button class="btn btn-secondary ms-2" @onclick="ClearForm">@L["cancel"]</button>
-            </span>
+            <button class="btn btn-success" @onclick="SaveCustomer">@(isEditMode? @L["update"] : @L["add"])</button>
+            <button class="btn btn-secondary ms-2" @onclick="ClearForm">@L["cancel"]</button>
+        </span>
 
-        
+
     }
 }
 
@@ -133,7 +130,8 @@ else
     private async Task ConfirmDelete(string customerId)
     {
         var customer = await db.Customers.FindAsync(customerId);
-        if (customer != null){
+        if (customer != null)
+        {
             var orders = await db.Orders.Where(o => o.CustomerId == customerId).ToListAsync();
             if (orders.Count == 0)
             {
@@ -152,24 +150,25 @@ else
             }
             else
             {
-                _message =  "You are sure you want to delete the customer including all orders ?";
+                _message = "You are sure you want to delete the customer including all orders ?";
                 _visible = true;
                 StateHasChanged();
                 _tcs = new TaskCompletionSource<bool>();
-                    var result = await _tcs.Task;
+                var result = await _tcs.Task;
 
-        if (result)
-        {
-            await DeleteCustomer(customerId);
-            await customerTable.LoadCustomersAsync();
-        }
+                if (result)
+                {
+                    await DeleteCustomer(customerId);
+                    await customerTable.LoadCustomersAsync();
+                }
             }
         }
 
 
     }
 
-    private void AssignToCustomers(List<Customer> customers){
+    private void AssignToCustomers(List<Customer> customers)
+    {
         exportTable.Customers = customers;
     }
 
@@ -178,7 +177,7 @@ else
         _visible = false;
         _message = "";
         _tcs?.SetResult(result);
-        StateHasChanged(); 
+        StateHasChanged();
         return Task.CompletedTask;
     }
 
@@ -251,17 +250,17 @@ else
     private bool IsSelectedPageSize(int size) => PageSize == size;
 
 
-    private async Task  OnPageSizeChanged(ChangeEventArgs e)
+    private async Task OnPageSizeChanged(ChangeEventArgs e)
     {
         if (int.TryParse(e.Value?.ToString(), out int newSize))
         {
             PageSize = newSize;
-            CurrentPage = 1; 
+            CurrentPage = 1;
             await customerTable.LoadCustomersAsync();
         }
     }
 
-  
+
 
     protected override void OnInitialized()
     {
@@ -287,15 +286,15 @@ else
         }
     }
 
-    private async Task  OnSearch()
+    private async Task OnSearch()
     {
         CurrentPage = 1;
-         exportTable.searchTerm = searchTerm;
+        exportTable.searchTerm = searchTerm;
         await customerTable.OnSearch(searchTerm);
     }
 
-  
- 
+
+
 
 
 

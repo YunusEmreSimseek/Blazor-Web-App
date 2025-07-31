@@ -413,7 +413,7 @@
     <value>Average</value>
     <comment/>
   </data>
-  <data name="exchangesPruchase" xml:space="preserve">
+  <data name="exchangesPurchase" xml:space="preserve">
     <value>Purchase</value>
     <comment/>
   </data>

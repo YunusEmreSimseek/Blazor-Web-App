@@ -152,7 +152,7 @@ else
     private bool IsPreviousDisabled => _currentPage == 1;
     private bool IsNextDisabled => _currentPage >= TotalPages;
     private int SelectedPageSize => _pageSize;
-    private List<User> _users = [];
+    private List<BlazorApp1.Models.User> _users = [];
     private EditingUser _editingUser = new EditingUser{Role=Role.User};
     private bool _isEditMode = false;
     private TableSortDirection _selectedSortDirection { get; set; }
@@ -234,7 +234,7 @@ else
         _isLoading = true;
         StateHasChanged();
 
-        IQueryable<User> query = _context.Users;
+        IQueryable<BlazorApp1.Models.User> query = _context.Users;
 
         if (!string.IsNullOrWhiteSpace(_searchTerm) && _searchTerm.Length >= 2)
         {
@@ -287,7 +287,7 @@ else
         }
     }
 
-    private void EditUser(User user)
+    private void EditUser(BlazorApp1.Models.User user)
     {
         _editingUser = new EditingUser
         {
