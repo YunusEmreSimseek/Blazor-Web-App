@@ -1,0 +1,131 @@
+@page "/movies"
+@using BlazorApp1.Models
+@using Microsoft.Extensions.Localization
+@inject IMovieService _movieService
+@inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@inject NavigationManager _navManager
+
+<PageTitle>@L["movies"]</PageTitle>
+
+<h1>@L["movies"]</h1>
+
+@if (_isLoading)
+{
+    <LoadingComp />
+}
+else
+{
+
+    <div style="display: flex; gap: 1rem; max-width: 400px;">
+        <TelerikTextBox @bind-Value="@_searchTerm"></TelerikTextBox>
+        <TelerikButton OnClick="@OnSearch">@L["search"]</TelerikButton>
+    </div>
+
+    <div class="mb-3" />
+
+    @if (_movies.Search != null && _movies.Search.Count > 0)
+    {
+        <TelerikGrid Class="grid" Data=@_movies.Search Pageable="true" Sortable="true" Resizable="true" PageSize="10"
+            Navigable="true" FilterMode="GridFilterMode.FilterMenu" Reorderable="true" OnRowClick="@OnGridRowClick">
+            <GridColumns>
+                <GridColumn Field="@nameof(ShortMovie.Year)" DisplayFormat="{0:dd.MM.yyyy}" Title=@L["date"] Width="195px" />
+                <GridColumn Field="@nameof(ShortMovie.Title)" Title=@L["title"] Width="195px" />
+                <GridColumn Field="@nameof(ShortMovie.Type)" Title=@L["type"] Width="195px" />
+                <GridColumn Field="@nameof(ShortMovie.Poster)" Title=@L["poster"] Filterable="false" Sortable="false"
+                    Width="195px">
+                    <Template>
+                        @{
+                            var item = (ShortMovie)context;
+                            <img src="@item.Poster" alt="Poster" height="100px" width="195px" />
+                        }
+                    </Template>
+                </GridColumn>
+            </GridColumns>
+        </TelerikGrid>
+    }
+}
+
+
+
+@code {
+    private bool _isLoading = false;
+    private string _searchTerm = string.Empty;
+
+
+    private Movie _movie = new Movie();
+    private SearchMovies _movies = new SearchMovies();
+
+    private void OnGridRowClick(GridRowClickEventArgs args)
+    {
+        var dataItem = (ShortMovie)args.Item;
+        if (dataItem != null && !string.IsNullOrEmpty(dataItem.imdbID))
+        {
+            _navManager.NavigateTo($"/movie-details/{dataItem.imdbID}");
+
+        }
+    }
+
+    private async Task OnSearch()
+    {
+        _isLoading = true;
+
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(_searchTerm))
+            {
+                _movies = await _movieService.GetMoviesAsync(_searchTerm);
+            }
+            else
+            {
+                _movies = new SearchMovies();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle error (e.g., show a message to the user)
+            Console.WriteLine($"Error searching movies: {ex.Message}");
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task LoadMovieDetails()
+    {
+        _isLoading = true;
+
+        try
+        {
+            _movie = await _movieService.GetMovieAsync("Inception");
+        }
+        catch (Exception ex)
+        {
+            // Handle error (e.g., show a message to the user)
+            Console.WriteLine($"Error loading movie: {ex.Message}");
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task LoadMovies()
+    {
+        _isLoading = true;
+
+        try
+        {
+            _movies = await _movieService.GetMoviesAsync("Superman");
+        }
+        catch (Exception ex)
+        {
+            // Handle error (e.g., show a message to the user)
+            Console.WriteLine($"Error loading movies: {ex.Message}");
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

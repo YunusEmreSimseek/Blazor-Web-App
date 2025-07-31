@@ -41,6 +41,11 @@ builder.Services.AddHttpClient<IExchangeService, ExchangeService>(client =>
 QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddApexCharts();
 builder.Services.AddTelerikBlazor();
+builder.Services.AddHttpClient<IMovieService, MovieService>(client =>
+{
+    client.BaseAddress = new Uri("https://www.omdbapi.com/");
+});
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 
 

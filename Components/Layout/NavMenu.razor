@@ -21,11 +21,11 @@
         </div>
         @if (!UserSessionManager.IsAuthenticated)
         {
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/login" Match="NavLinkMatch.All">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/login" Match="NavLinkMatch.All">
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @L["login"]
-            </NavLink>
-        </div>
+                </NavLink>
+            </div>
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="/register" Match="NavLinkMatch.All">
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> @L["register"]
@@ -36,10 +36,21 @@
                     <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> @L["exchanges"]
                 </NavLink>
             </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/movies" Match="NavLinkMatch.All">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> @L["movies"]
+                </NavLink>
+            </div>
+            @* <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/movie-details/tt0078346" Match="NavLinkMatch.All">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> @L["movieDetails"]
+                </NavLink>
+            </div> *@
         }
         else
         {
-            if(UserSessionManager.Role == Role.Admin){
+            if (UserSessionManager.Role == Role.Admin)
+            {
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="/admin-panel" Match="NavLinkMatch.All">
                         <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> @L["users"]
@@ -72,4 +83,3 @@
         };
     }
 }
-
