@@ -67,7 +67,31 @@ else
     {
         @if (_showMode == ShowMode.Graphic || _showMode == ShowMode.All)
         {
-            <ApexChart TItem="ChartDataModel" Title=@L["exchangeRates"]>
+            <p>This is exchange reates from @_startDate to @_endDate for
+                @if (_currencies.Count > 1)
+                {
+                    @foreach (var currency in _currencies)
+                    {
+                        if(currency != _currencies.Last())
+                        {
+                            <label>@currency.ToString(), </label>
+                        }
+                        else
+                        {
+                            <label>@currency.ToString() to MKD</label>
+                        }
+                    }
+                }
+                else {
+                    @foreach (var currency in _currencies)
+                    {
+                        <label>@currency.ToString() to MKD</label>
+                    }
+                }
+
+            </p>
+
+            <ApexChart TItem="ChartDataModel" Title=@L["exchangeRates"] Height="600">
 
                 @if (_currencies.Contains(Currency.EUR))
                 {
@@ -91,12 +115,10 @@ else
         @if (_showMode == ShowMode.All || _showMode == ShowMode.Table)
         {
 
-             <TelerikGrid Class="grid" Data=@_exchanges  Pageable="true" Sortable="true"
-             Resizable="true" PageSize="10" Navigable="true" FilterMode="GridFilterMode.FilterMenu"
-             Reorderable="true"
-              >
+            <TelerikGrid Class="grid" Data=@_exchanges Pageable="true" Sortable="true" Resizable="true" PageSize="10"
+                Navigable="true" FilterMode="GridFilterMode.FilterMenu" Reorderable="true">
                 <GridColumns>
-                    <GridColumn Field="@nameof(ExchangeRate.Datum)" DisplayFormat="{0:dd.MM.yyyy}" Title=@L["date"] Width="195px" /> 
+                    <GridColumn Field="@nameof(ExchangeRate.Datum)" DisplayFormat="{0:dd.MM.yyyy}" Title=@L["date"] Width="195px" />
                     <GridColumn Field="@nameof(ExchangeRate.Oznaka)" Title=@L["currency"] Width="195px" />
                     <GridColumn Field="@nameof(ExchangeRate.DrzavaAng)" Title=@L["country"] Width="195px" />
                     <GridColumn Field="@nameof(ExchangeRate.NazivAng)" Title=@L["name"] Width="195px" />
@@ -104,34 +126,8 @@ else
                     <GridColumn Field="@nameof(ExchangeRate.Kupoven)" Title=@L["exchangesPurchase"] Width="195px" />
                     <GridColumn Field="@nameof(ExchangeRate.Prodazen)" Title=@L["exchangesSale"] Width="195px" />
                 </GridColumns>
-            </TelerikGrid>  
+            </TelerikGrid>
 
-             @* <table class="table">
-                <thead>
-                    <tr>
-                        <th> @L["date"] </th>
-                        <th> @L["currency"] </th>
-                        <th> @L["country"] </th>
-                        <th> @L["name"] </th>
-                        <th> @L["average"] </th>
-                        <th> @L["exchangesPurchase"] </th>
-                        <th> @L["exchangesSale"] </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var exchange in _filteredExchanges.Count > 0 ? _filteredExchanges : _exchanges)
-                    {
-                        <tr>
-                            <td>@exchange.Datum</td>
-                            <td>@exchange.Oznaka</td>
-                            <td>@exchange.DrzavaAng</td>
-                            <td>@exchange.NazivAng</td>
-                            <td>@exchange.Sreden</td>
-                            <td>@exchange.Kupoven</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>  *@
         }
     }
 
@@ -149,7 +145,7 @@ else
     private List<Currency> _currencies = new() { Currency.EUR };
     private IEnumerable<Currency> _allCurrencies => Enum.GetValues(typeof(Currency)).Cast<Currency>();
 
- 
+
     private void ToggleCurrency(Currency currency)
     {
         if (_currencies.Contains(currency))
