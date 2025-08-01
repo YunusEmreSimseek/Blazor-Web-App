@@ -24,21 +24,27 @@ else
         <CardBody>
             <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
                 <div style="flex: 1;">
-                    <p><strong>Tür:</strong> @_movie.Genre</p>
-                    <p><strong>Yönetmen:</strong> @_movie.Director</p>
-                    <p><strong>IMDb Puanı:</strong> @_movie.imdbRating</p>
-                    <p><strong>Açıklama:</strong> @_movie.Plot</p>
-                    <p><strong>Ülke:</strong> @_movie.Country</p>
-                    <p><strong>Dil:</strong> @_movie.Language</p>
-                    <p><strong>Yazar:</strong> @_movie.Writer</p>
-                    <p><strong>Tip:</strong> @_movie.Type</p>
-                    <p><strong>Yayınlanma:</strong> @_movie.Released</p>
-                    <p><strong>Ratings:</strong> @_movie.Ratings</p>
-                    <p><strong>Produksuyon:</strong> @_movie.Production</p>
+                    <p><strong>Genre:</strong> @_movie.Genre</p>
+                    <p><strong>Director:</strong> @_movie.Director</p>
+                    <p><strong>IMDb Rating:</strong> @_movie.imdbRating</p>
+                    <p><strong>Plot:</strong> @_movie.Plot</p>
+                    <p><strong>Country:</strong> @_movie.Country</p>
+                    <p><strong>Language:</strong> @_movie.Language</p>
+                    <p><strong>Writer:</strong> @_movie.Writer</p>
+                    <p><strong>Type:</strong> @_movie.Type</p>
+                    <p><strong>Released:</strong> @_movie.Released</p>
+                    <p><strong>Ratings:</strong>
+                        @foreach (var rating in _movie.Ratings)
+                        {
+                            <br />
+                            <span> @rating.Source: @rating.Value</span>
+                        }
+                    </p>
+                    <p><strong>Production:</strong> @_movie.Production</p>
                     <p><strong>Rated:</strong> @_movie.Rated</p>
                     <p><strong>Runtime:</strong> @_movie.Runtime</p>
                     <p><strong>Actors:</strong> @_movie.Actors</p>
-                    <p><strong>Ödüller:</strong> @_movie.Awards</p>
+                    <p><strong>Awards:</strong> @_movie.Awards</p>
                     <p><strong>MetaScore:</strong> @_movie.Metascore</p>
                     <p><strong>ImdbVotes:</strong> @_movie.imdbVotes</p>
                     <p><strong>imdbID:</strong> @_movie.imdbID</p>
