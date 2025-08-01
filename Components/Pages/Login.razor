@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
+@using BlazorApp1.Models
 @using Blazored.LocalStorage
 @using Microsoft.Extensions.Localization
 @inject NavigationManager NavigationManager
@@ -9,12 +10,13 @@
 @inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
 @inject ILocalStorageService LocalStorageService
 @inject IExchangeService ExchangeService
+@inject AuthService _authService
 
 
 
 <h1>@L["login"]</h1>
 
-<EditForm Model="@loginModel" OnSubmit="HandleLogin" FormName="LoginForm">
+<EditForm Model="@loginModel" OnSubmit="HandleAuthLogin" FormName="LoginForm">
 
     <div class="mb-3">
         <label>@L["username"]</label>
@@ -27,7 +29,7 @@
     </div>
 
     <button class="btn btn-primary" type="submit">@L["login"]</button>
-    
+
 </EditForm>
 
 @if (!string.IsNullOrEmpty(message))
@@ -48,10 +50,36 @@
 
         if (result != null)
         {
-            
+
             await LocalStorageService.SetItemAsStringAsync("username", result.Username);
             await LocalStorageService.SetItemAsync("role", result.Role);
             UserSessionManager.SetUser(result.Username, result.Role);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            message = "Invalid username or password.";
+        }
+    }
+    private async Task HandleAuthLogin()
+    {
+        var response = isValid();
+        if (!response) return;
+
+        AuthRequest request = new AuthRequest
+        {
+            Username = loginModel.Username,
+            Password = loginModel.Password
+        };
+
+        var result = await _authService.Login(request);
+
+        if (result != null && !string.IsNullOrEmpty(result.AccessToken) && !string.IsNullOrEmpty(result.RefreshToken))
+        {
+
+            await LocalStorageService.SetItemAsStringAsync("accessToken", result.AccessToken);
+            await LocalStorageService.SetItemAsStringAsync("refreshToken", result.RefreshToken);
+            UserSessionManager.SetTokens(result.AccessToken, result.RefreshToken);
             NavigationManager.NavigateTo("/");
         }
         else

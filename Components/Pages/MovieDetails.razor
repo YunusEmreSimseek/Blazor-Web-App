@@ -4,6 +4,8 @@
 
 @inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
 @inject IMovieService _movieService
+@inject UserSessionManager _userSessionManager
+@inject NavigationManager _navManager
 
 
 
@@ -71,8 +73,18 @@ else
     private bool _isLoading = false;
     private Movie _movie = new Movie();
 
+    protected override void OnInitialized()
+    {
+        if (!_userSessionManager.IsAuthenticated)
+        {
+            _navManager.NavigateTo("/login");
+            return;
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
+
+
         if (!string.IsNullOrEmpty(imdbId))
         {
             await LoadMovie();

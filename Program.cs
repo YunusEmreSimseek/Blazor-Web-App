@@ -46,6 +46,10 @@ builder.Services.AddHttpClient<IMovieService, MovieService>(client =>
     client.BaseAddress = new Uri("https://www.omdbapi.com/");
 });
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddHttpClient<AuthService>(options =>
+{
+    options.BaseAddress = new Uri("http://localhost:5001/api/auth/");
+});
 
 
 

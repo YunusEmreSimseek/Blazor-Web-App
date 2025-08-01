@@ -1,33 +1,40 @@
 ﻿@page "/register"
 @using System.ComponentModel.DataAnnotations
+@using BlazorApp1.Models
 @using BlazorApp1.Resources
 @using Microsoft.Extensions.Localization
 @inject UserService UserService
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject IStringLocalizer<BlazorApp1.Resources.SharedResource> L
+@inject AuthService _authService
 
 
 
 
 <h1>@L["register"]</h1>
 
-<EditForm Model="@registerModel" OnSubmit="HandleRegister" FormName="RegisterForm">
+<EditForm Model="@registerModel" OnSubmit="HandleAuthRegister" FormName="RegisterForm">
 
     <div class="mb-3">
-        <label>@L["username"]</label>
-        <InputText @bind-Value="registerModel.Username" class="form-control" />
+        <label>@L["name"]</label>
+        <InputText @bind-Value="_registerRequest.Name" class="form-control" />
     </div>
 
-     <div class="mb-3">
+    <div class="mb-3">
+        <label>@L["email"]</label>
+        <InputText @bind-Value="_registerRequest.Email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
         <label>@L["password"]</label>
-        <InputText @bind-Value="registerModel.Password" type="password" class="form-control" />
+        <InputText @bind-Value="_registerRequest.Password" type="password" class="form-control" />
     </div>
 
-    <div class="mb-3">
+    @* <div class="mb-3">
         <label>@L["confirmPassword"]</label>
         <InputText @bind-Value="registerModel.ConfirmPassword" type="password" class="form-control" />
-    </div> 
+    </div> *@
 
     <button type="submit" class="btn btn-primary">@L["register"]</button>
 </EditForm>
@@ -39,6 +46,7 @@
 
 @code {
     private RegisterModel registerModel = new();
+    private RegisterRequest _registerRequest = new();
     private string message = "";
 
     private async Task HandleRegister()
@@ -48,6 +56,23 @@
 
         var result = await UserService.RegisterAsync(registerModel.Username, registerModel.Password);
 
+        if (result)
+        {
+            message = "Registration successful!";
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            message = "Username already exists.";
+        }
+    }
+
+    private async Task HandleAuthRegister()
+    {
+        var response = isValidAuth();
+        if (!response) return;
+
+        var result = await _authService.Register(_registerRequest);
         if (result)
         {
             message = "Registration successful!";
@@ -89,12 +114,37 @@
         return true;
     }
 
+    private bool isValidAuth()
+    {
+        if (String.IsNullOrEmpty(_registerRequest.Name))
+        {
+            message = L["usernameRequired"];
+            return false;
+        }
+        if (String.IsNullOrEmpty(_registerRequest.Email))
+        {
+            message = L["emailRequired"];
+            return false;
+        }
+        if (String.IsNullOrEmpty(_registerRequest.Password))
+        {
+            message = L["passwordRequired"];
+            return false;
+        }
+        if (_registerRequest.Password.Length < 6)
+        {
+            message = L["passwordMinLength"];
+            return false;
+        }
+        return true;
+    }
+
     public class RegisterModel
     {
         public string Username { get; set; }
 
         public string Password { get; set; }
-    
+
         public string ConfirmPassword { get; set; }
     }
 }
